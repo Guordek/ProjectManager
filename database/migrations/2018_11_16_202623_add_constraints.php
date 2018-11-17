@@ -27,8 +27,8 @@ class AddConstraints extends Migration
 
       Schema::table('project_user', function (Blueprint $table)
       {
-          $table->foreign('id_project')->references('id')->on('projects');
-          $table->foreign('id_user')->references('id')->on('users');
+          $table->foreign('project_id')->references('id')->on('projects');
+          $table->foreign('user_id')->references('id')->on('users');
       });
 
     }
