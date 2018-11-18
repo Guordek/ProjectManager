@@ -12,7 +12,7 @@ class Project extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'id_category', 'id_status',
+        'name', 'description', 'category_id', 'status_id',
     ];
 
     public function tasks() {

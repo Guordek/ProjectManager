@@ -17,8 +17,10 @@ class CreateTasksTable extends Migration
           $table->increments('id');
           $table->string('name');
           $table->string('description');
-          $table->integer('id_project')->unsigned();
-          $table->integer('id_level')->unsigned();
+          $table->date('start')->default(date('Y-m-d H:i:s'));
+          $table->date('end');
+          $table->integer('project_id')->unsigned();
+          $table->integer('level_id')->unsigned();
           $table->timestamps();
         });
     }

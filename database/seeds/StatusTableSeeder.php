@@ -12,11 +12,11 @@ class StatusTableSeeder extends Seeder
     public function run()
     {
         DB::table('statuses')->insert([
-          ['name' => 'Created'],
-          ['name' => 'Open'],
-          ['name' => 'In progress'],
-          ['name' => 'Stopped'],
-          ['name' => 'Closed'],
+          ['name' => 'Created', 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')],
+          ['name' => 'Open', 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')],
+          ['name' => 'In progress', 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')],
+          ['name' => 'Stopped', 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')],
+          ['name' => 'Closed', 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')],
         ]);
     }
 }

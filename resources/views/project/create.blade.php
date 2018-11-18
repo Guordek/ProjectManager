@@ -16,7 +16,7 @@
               </div>
               <div class="form-group">
                 {!! Form::label('id_category', 'Categorie') !!}
-                <select class='form-control' id='id_category' name='id_category'>
+                <select class='form-control' id='category_id' name='category_id'>
                   @foreach($categories as $category)
                     <option value="{!! $category->id !!}">{!! $category->name !!}</option>
                   @endforeach

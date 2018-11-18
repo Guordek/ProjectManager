@@ -15,14 +15,14 @@ class AddConstraints extends Migration
     {
       Schema::table('projects', function (Blueprint $table)
       {
-          $table->foreign('id_category')->references('id')->on('categories')->onDelete('cascade');
-          $table->foreign('id_status')->references('id')->on('statuses')->onDelete('cascade');
+          $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+          $table->foreign('status_id')->references('id')->on('statuses')->onDelete('cascade');
       });
 
       Schema::table('tasks', function (Blueprint $table)
       {
-          $table->foreign('id_project')->references('id')->on('projects')->onDelete('cascade');
-          $table->foreign('id_level')->references('id')->on('levels')->onDelete('cascade');
+          $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+          $table->foreign('level_id')->references('id')->on('levels')->onDelete('cascade');
       });
 
       Schema::table('project_user', function (Blueprint $table)

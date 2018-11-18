@@ -13,9 +13,9 @@ class CategoriesTableSeeder extends Seeder
     public function run()
     {
         DB::table('categories')->insert([
-          ['name' => 'Network'],
-          ['name' => 'Security'],
-          ['name' => 'Application'],
+          ['name' => 'Network', 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')],
+          ['name' => 'Security', 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')],
+          ['name' => 'Application', 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')],
         ]);
     }
 }

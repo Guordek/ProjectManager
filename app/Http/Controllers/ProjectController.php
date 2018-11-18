@@ -33,6 +33,11 @@ class ProjectController extends Controller
       return view('project.index', compact('projects'));
     }
 
+    public function show($id) {
+      $project = Project::findOrFail($id);
+      return view('project.show', compact('project'));
+    }
+
     public function create() {
       $categories = Category::get();
       return view('project.create', compact(['categories']));
@@ -42,8 +47,8 @@ class ProjectController extends Controller
       $project = new Project;
       $project->name = $request->name;
       $project->description = $request->description;
-      $project->id_category = $request->id_category;
-      $project->id_status = 1;
+      $project->category_id = $request->category_id;
+      $project->status_id = 1;
       $project->save();
       $user = Auth::user()->id;
       $project->users()->sync($user);
