@@ -11,7 +11,8 @@ class StatusTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('status')->insert([
+        DB::table('statuses')->insert([
+          ['name' => 'Created'],
           ['name' => 'Open'],
           ['name' => 'In progress'],
           ['name' => 'Stopped'],

@@ -12,7 +12,7 @@ class Project extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description',
+        'name', 'description', 'id_category', 'id_status',
     ];
 
     public function tasks() {
@@ -28,6 +28,6 @@ class Project extends Model
     }
 
     public function users() {
-      return $this->belongsToMany('App\User');
+      return $this->belongsToMany('App\User', 'project_user', 'project_id', 'user_id');
     }
 }
