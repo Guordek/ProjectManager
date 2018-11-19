@@ -45,4 +45,4 @@ End with an example of getting some data out of the system or using it for a lit
 
 ## License
 
-This project is licensed under the Apache License
+This project is licensed under the Apache License - see the [LICENSE.md](https://github.com/Guordek/ProjectManager/blob/master/LICENSE) file for details
