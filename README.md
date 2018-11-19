@@ -19,10 +19,6 @@ Composer
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
 ```
 - Clone the repository
 - Create a new database
@@ -33,8 +29,6 @@ Say what the step will be
 > php artisan migrate:fresh --seed
 > php artisan key:generate
 ```
-
-End with an example of getting some data out of the system or using it for a little demo
 
 ## Built With
 
