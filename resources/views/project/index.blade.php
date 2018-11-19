@@ -11,6 +11,12 @@
 
                 <div class="card-body">
                   <p>{{ $project->description }}</p>
+                  {!! Form::label('start', 'Starting date') !!}
+                  {!! Form::text('start', $project->start, ['class' => 'form-control', 'disabled']) !!}
+                  <br>
+                  {!! Form::label('end', 'Ending date') !!}
+                  {!! Form::text('end', $project->end, ['class' => 'form-control', 'disabled']) !!}
+                  <br>
                   {!! Form::open(['method' => 'get', 'url' => route('project.show', $project->id)]) !!}
                     {!! Form::submit('Show', ['class' => 'btn btn-primary float-left']) !!}
                   {!! Form::close() !!}
@@ -19,6 +25,7 @@
                   {!! Form::close() !!}
                 </div>
             </div>
+            <br>
           @empty
           <div class="card">
               <div class="card-header">No project available</div>

@@ -23,10 +23,26 @@
                 </select>
               </div>
               <div class="form-group">
+                {!! Form::label('start', 'Starting date') !!}
+                {{ Form::text('start', '', ['class' => 'form-control datepicker']) }}
+              </div>
+              <div class="form-group">
+                {!! Form::label('end', 'Ending date') !!}
+                {{ Form::text('end', '', ['class' => 'form-control datepicker']) }}
+              </div>
+              <div class="form-group">
                 {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!}
               </div>
             {!! Form::close() !!}
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script>
+  $(function() {
+    $(".datepicker").datepicker();
+  });
+  </script>
 @endsection

@@ -47,6 +47,8 @@ class ProjectController extends Controller
       $project = new Project;
       $project->name = $request->name;
       $project->description = $request->description;
+      $project->start = date("Y-m-d H:i:s", strtotime($request->start));
+      $project->end = date("Y-m-d H:i:s", strtotime($request->end));
       $project->category_id = $request->category_id;
       $project->status_id = 1;
       $project->save();
