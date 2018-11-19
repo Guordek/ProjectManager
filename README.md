@@ -24,8 +24,11 @@ A step by step series of examples that tell you how to get a development env run
 Say what the step will be
 
 ```
-Clone the repository
-Open a terminal in the folder
+- Clone the repository
+- Create a new database
+- Copy the ".env.example" file and rename it to ".env"
+- Enter your configuration
+- Open a terminal in the folder
 > composer update
 > php artisan migrate:fresh --seed
 ```
