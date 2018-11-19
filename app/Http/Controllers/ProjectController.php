@@ -34,7 +34,7 @@ class ProjectController extends Controller
     }
 
     public function show($id) {
-      $project = Project::findOrFail($id);
+      $project = Auth::user()->projects->where('id', $id)->first();
       return view('project.show', compact('project'));
     }
 

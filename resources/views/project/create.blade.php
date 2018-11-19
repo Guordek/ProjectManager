@@ -24,11 +24,11 @@
               </div>
               <div class="form-group">
                 {!! Form::label('start', 'Starting date') !!}
-                {{ Form::text('start', '', ['class' => 'form-control datepicker']) }}
+                {{ Form::text('start', '', ['class' => 'form-control datepicker', 'autocomplete' => 'off']) }}
               </div>
               <div class="form-group">
                 {!! Form::label('end', 'Ending date') !!}
-                {{ Form::text('end', '', ['class' => 'form-control datepicker']) }}
+                {{ Form::text('end', '', ['class' => 'form-control datepicker', 'autocomplete' => 'off']) }}
               </div>
               <div class="form-group">
                 {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!}

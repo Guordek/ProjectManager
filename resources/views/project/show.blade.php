@@ -10,8 +10,11 @@
             <p>{{ $task->name }}</p>
             <p>{{ $task->description }}</p>
             @empty
-            <p>No task pending</p>
+            <p>No pending task</p>
             @endforelse
+            {!! Form::open(['method' => 'get', 'url' => route('task.createTask', $project->id)]) !!}
+              {!! Form::submit('Add a new task', ['class' => 'btn btn-primary float-left']) !!}
+            {!! Form::close() !!}
         </div>
     </div>
 </div>
