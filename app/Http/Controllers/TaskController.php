@@ -57,7 +57,9 @@ class TaskController extends Controller
         return redirect(route('project.show', $request->project_id));
     }
 
-    public function destroy($project) {
-
+    public function destroy($task) {
+        $task = Task::findOrFail($task);
+        $task->delete();
+        return redirect(route('project.show', $task->project_id));
     }
 }
