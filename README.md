@@ -1,4 +1,4 @@
-# Project Manager
+# Project Manager [work in progress]
 
 This app allows you to create projects and add some tasks inside.
 
