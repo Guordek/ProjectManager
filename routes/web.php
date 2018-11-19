@@ -22,3 +22,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('project', 'ProjectController');
 Route::resource('task', 'TaskController');
 Route::get('/project/{id}/task/create', 'TaskController@createTask')->name('task.createTask');
+Route::get('/project/{id}/user/link', 'ProjectController@formLinkUserProject')->name('project.formLinkUserProject');
+Route::post('/project/{id}/user/link', 'ProjectController@linkUserProject')->name('project.linkUserProject');

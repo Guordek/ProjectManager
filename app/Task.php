@@ -12,7 +12,7 @@ class Task extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'start', 'end', 'project_id', 'level_id',
+        'name', 'description', 'start', 'end', 'project_id', 'level_id', 'status_id'
     ];
 
     public function project() {
@@ -21,5 +21,9 @@ class Task extends Model
 
     public function level() {
       return $this->belongsTo('App\Level');
+    }
+
+    public function status() {
+      return $this->belongsTo('App\Status');
     }
 }

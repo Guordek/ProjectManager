@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Project;
 use App\Category;
 use App\Status;
+use App\User;
 
 class ProjectController extends Controller
 {
@@ -29,7 +30,7 @@ class ProjectController extends Controller
     public function index()
     {
       $user = Auth::user();
-      $projects = $user->projects;
+      $projects = $user->projects->sortBy('end');
       return view('project.index', compact('projects'));
     }
 
@@ -55,6 +56,15 @@ class ProjectController extends Controller
       $user = Auth::user()->id;
       $project->users()->sync($user);
       return redirect(route('project.index'));
+    }
+
+    public function formLinkUserProject($id) {
+      $project = Auth::user()->projects->where('id', $id)->first();
+      $usersInProject = $project->users;
+      $users = User::select()
+                    ->whereNotIn('id', $usersInProject)
+                    ->get();
+      return view('project.link', compact(['project', 'users']));
     }
 
     public function destroy($project) {

@@ -86,7 +86,7 @@
 
                 <div class="links">
                     <a href="/project/create">Create a new project</a>
-                    <a href="/project">Your project</a>
+                    <a href="/project">Your projects</a>
                 </div>
             </div>
         </div>

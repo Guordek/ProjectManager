@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
           <h1>Your projects</h1>
           @forelse ($projects as $project)
             <div class="card">
@@ -11,12 +11,16 @@
 
                 <div class="card-body">
                   <p>{{ $project->description }}</p>
-                  {!! Form::label('start', 'Starting date') !!}
-                  {!! Form::text('start', $project->start, ['class' => 'form-control', 'disabled']) !!}
-                  <br>
-                  {!! Form::label('end', 'Ending date') !!}
-                  {!! Form::text('end', $project->end, ['class' => 'form-control', 'disabled']) !!}
-                  <br>
+                  <div class="form-group row">
+                    <div class="col">
+                      {!! Form::label('start', 'Starting date') !!}
+                      {{ Form::text('start', $project->start, ['class' => 'form-control', 'disabled']) }}
+                    </div>
+                    <div class="col">
+                      {!! Form::label('end', 'Ending date') !!}
+                      {{ Form::text('end', $project->end, ['class' => 'form-control', 'disabled']) }}
+                    </div>
+                  </div>
                   {!! Form::open(['method' => 'get', 'url' => route('project.show', $project->id)]) !!}
                     {!! Form::submit('Show', ['class' => 'btn btn-primary float-left']) !!}
                   {!! Form::close() !!}

@@ -32,7 +32,8 @@ class TaskController extends Controller
     }
 
     public function show($id) {
-
+        $task = Task::findOrFail($id);
+        return view('task.show', compact('task'));
     }
 
     public function create($id) {
@@ -53,6 +54,7 @@ class TaskController extends Controller
         $task->end = date("Y-m-d H:i:s", strtotime($request->end));
         $task->project_id = $request->project_id;
         $task->level_id = $request->level_id;
+        $task->status_id = 1;
         $task->save();
         return redirect(route('project.show', $request->project_id));
     }
