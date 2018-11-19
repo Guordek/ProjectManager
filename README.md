@@ -31,6 +31,7 @@ Say what the step will be
 - Open a terminal in the folder
 > composer update
 > php artisan migrate:fresh --seed
+> php artisan key:generate
 ```
 
 End with an example of getting some data out of the system or using it for a little demo
