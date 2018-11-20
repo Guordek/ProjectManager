@@ -4,8 +4,26 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-          <h1>{{ $task->name }}</h1>
-          <textarea class="form-control" rows="5" disabled>{{ $task->description }}</textarea>
+          <div class="card" style="width: 100%;">
+            <div class="card-body">
+              <h5 class="card-title">{{ $task->name }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{ $task->created_at }}</h6>
+              <p class="card-text">{{ $task->description }}</p>
+            </div>
+          </div>
+          <hr><hr>
+          @forelse($task->comments as $comment)
+          <div class="card" style="width: 100%;">
+            <div class="card-body">
+              <h5 class="card-title">{{ $comment->user->name }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{ $comment->created_at }}</h6>
+              <p class="card-text">{{ $comment->comment }}</p>
+            </div>
+          </div>
+          <hr>
+          @empty
+            <p>no comment</p>
+          @endforelse
       </div>
     </div>
 </div>
