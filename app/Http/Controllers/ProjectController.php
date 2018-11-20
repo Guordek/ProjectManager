@@ -60,7 +60,9 @@ class ProjectController extends Controller
 
     public function formLinkUserProject($id) {
       $project = Auth::user()->projects->where('id', $id)->first();
-      $users = User::get();
+      $usersInProject = $project->users;
+      $allUsers = User::get();
+      $users = $this->check_diff_multi($allUsers, $usersInProject);
       return view('project.link', compact(['project', 'users']));
     }
 
@@ -77,5 +79,19 @@ class ProjectController extends Controller
       $project = Project::findOrFail($project);
       $project->delete();
       return redirect(route('project.index'));
+    }
+
+    public function check_diff_multi($array1, $array2){
+      $result = array();
+      foreach($array1 as $key => $val) {
+           if(isset($array2[$key])){
+             if(is_array($val) && $array2[$key]){
+                 $result[$key] = check_diff_multi($val, $array2[$key]);
+             }
+         } else {
+             $result[$key] = $val;
+         }
+      }
+      return $result;
     }
 }
