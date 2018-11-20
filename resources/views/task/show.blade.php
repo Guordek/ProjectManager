@@ -22,8 +22,20 @@
           </div>
           <hr>
           @empty
-            <p>no comment</p>
           @endforelse
+
+          {!! Form::open(['url' => route('comment.store')]) !!}
+            <div class="form-group row">
+              <div class="col">
+                {!! Form::label('comment', 'Your comment') !!}
+                {{ Form::textarea('comment', '', ['class' => 'form-control', 'required']) }}
+                {{ Form::hidden('task_id', $task->id) }}
+              </div>
+            </div>
+            <div class="form-group">
+              {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
+            </div>
+          {!! Form::close() !!}
       </div>
     </div>
 </div>
