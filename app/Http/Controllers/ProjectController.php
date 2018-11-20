@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use DB;
 use App\Project;
 use App\Category;
 use App\Status;
@@ -60,11 +60,17 @@ class ProjectController extends Controller
 
     public function formLinkUserProject($id) {
       $project = Auth::user()->projects->where('id', $id)->first();
-      $usersInProject = $project->users;
-      $users = User::select()
-                    ->whereNotIn('id', $usersInProject)
-                    ->get();
+      $users = User::get();
       return view('project.link', compact(['project', 'users']));
+    }
+
+    public function linkUserProject(Request $request) {
+      $project = Auth::user()->projects->where('id', $request->project_id)->first();
+      $user = User::get()->where('id', $request->user_id)->first();
+      DB::table('project_user')->insert(
+        ['project_id' => $project->id, 'user_id' => $user->id]
+      );
+      return redirect(route('project.index'));
     }
 
     public function destroy($project) {
