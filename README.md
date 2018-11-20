@@ -11,7 +11,7 @@ What things you need to install the software and how to install them
 ```
 Web server (Apache)
 SQL server (MySQL)
-PHP
+PHP 7.2
 Composer
 ```
 
