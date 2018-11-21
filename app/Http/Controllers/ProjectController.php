@@ -58,6 +58,25 @@ class ProjectController extends Controller
       return redirect(route('project.index'));
     }
 
+    public function edit($id) {
+      $project = Auth::user()->projects->where('id', $id)->first();
+      $categories = Category::get();
+      $statuses = Status::get();
+      return view('project.edit', compact(['project', 'categories', 'statuses']));
+    }
+
+    public function update(Request $request, $id) {
+      $project = Auth::user()->projects->where('id', $id)->first();
+      $project->name = $request->name;
+      $project->description = $request->description;
+      $project->start = date("Y-m-d H:i:s", strtotime($request->start));
+      $project->end = date("Y-m-d H:i:s", strtotime($request->end));
+      $project->category_id = $request->category_id;
+      $project->status_id = $request->status_id;
+      $project->save();
+      return view('project.show', compact('project'));
+    }
+
     public function formLinkUserProject($id) {
       $project = Auth::user()->projects->where('id', $id)->first();
       $usersInProject = $project->users;

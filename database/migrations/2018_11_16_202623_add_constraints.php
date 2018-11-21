@@ -24,6 +24,7 @@ class AddConstraints extends Migration
           $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
           $table->foreign('level_id')->references('id')->on('levels')->onDelete('cascade');
           $table->foreign('status_id')->references('id')->on('statuses')->onDelete('cascade');
+          $table->foreign('user_id')->references('id')->on('users');
       });
 
       Schema::table('project_user', function (Blueprint $table)

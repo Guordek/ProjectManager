@@ -53,6 +53,7 @@ class TaskController extends Controller
         $task->start = date("Y-m-d H:i:s", strtotime($request->start));
         $task->end = date("Y-m-d H:i:s", strtotime($request->end));
         $task->project_id = $request->project_id;
+        $task->user_id = Auth::user()->id;
         $task->level_id = $request->level_id;
         $task->status_id = 1;
         $task->save();
