@@ -11,7 +11,7 @@
               {!! Form::close() !!}
             </p>
             <br/>
-            <table class="table">
+            <table class="table table-hover">
               <thead>
                 <tr>
                   <th scope="col">Name</th>
@@ -55,51 +55,43 @@
                   <td colspan="8">No pending task</td>
                 </tr>
                 @endforelse
-                <tr>
-                  <td colspan="8">
-                    {!! Form::open(['method' => 'get', 'url' => route('task.createTask', $project->id)]) !!}
-                      {!! Form::submit('Add a new task', ['class' => 'btn btn-primary float-left']) !!}
-                    {!! Form::close() !!}
-                  </td>
-                </tr>
-
               </tbody>
             </table>
-          </div>
-          <div class="col-md-12">
-            <h3>Users on this project</h3>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                @forelse($project->users as $user)
-                <tr>
-                  <th scope="row">{{ $user->name }}</th>
-                  <td>{{ $user->email }}</td>
-                  <td>
-
-                  </td>
-                </tr>
-                @empty
-                <tr>
-                  <td colspan="4">No user in this project</td>
-                </tr>
-                @endforelse
-                <tr>
-                  <td colspan="7">
-                    {!! Form::open(['method' => 'get', 'url' => route('project.formLinkUserProject', $project->id)]) !!}
-                      {!! Form::submit('Add a user to the project', ['class' => 'btn btn-primary float-left']) !!}
-                    {!! Form::close() !!}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            {!! Form::open(['method' => 'get', 'url' => route('task.createTask', $project->id)]) !!}
+              {!! Form::submit('Add a new task', ['class' => 'btn btn-primary float-left']) !!}
+            {!! Form::close() !!}
         </div>
+
+        <div class="col-md-12">
+          <h3>Users on this project</h3>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @forelse($project->users as $user)
+              <tr>
+                <th scope="row">{{ $user->name }}</th>
+                <td>{{ $user->email }}</td>
+                <td>
+
+                </td>
+              </tr>
+              @empty
+              <tr>
+                <td colspan="3">No user in this project</td>
+              </tr>
+              @endforelse
+            </tbody>
+          </table>
+          {!! Form::open(['method' => 'get', 'url' => route('project.formLinkUserProject', $project->id)]) !!}
+            {!! Form::submit('Add a user to the project', ['class' => 'btn btn-primary float-left']) !!}
+          {!! Form::close() !!}
+      </div>
     </div>
 </div>
 @endsection
