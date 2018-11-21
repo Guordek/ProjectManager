@@ -10,6 +10,7 @@
                 {!! Form::submit('Edit the project', ['class' => 'btn btn-primary']) !!}
               {!! Form::close() !!}
             </p>
+            <br/>
             <table class="table">
               <thead>
                 <tr>
@@ -32,14 +33,17 @@
                   <td>{{ $task->end }}</td>
                   <td>{{ $task->level->name }}</td>
                   <td>{{ $task->user->name }}</td>
-                  <td>
+                  <td class="column-verticallineMiddle form-inline">
                     {!! Form::open(['method' => 'get', 'url' => route('task.show', $task)]) !!}
-                      {!! Form::submit('Show', ['class' => 'btn btn-primary']) !!}
+                      {!! Form::submit('Show', ['class' => 'btn btn-link']) !!}
                     {!! Form::close() !!}
-                  </td>
-                  <td>
+
+                    {!! Form::open(['method' => 'get', 'url' => route('task.link', $task)]) !!}
+                      {!! Form::submit('Link', ['class' => 'btn btn-link']) !!}
+                    {!! Form::close() !!}
+
                     {!! Form::open(['method' => 'delete', 'url' => route('task.destroy', $task)]) !!}
-                      {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                      {!! Form::submit('Delete', ['class' => 'btn btn-link']) !!}
                     {!! Form::close() !!}
                   </td>
                 </tr>

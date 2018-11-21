@@ -23,5 +23,7 @@ Route::resource('project', 'ProjectController');
 Route::resource('task', 'TaskController');
 Route::resource('comment', 'CommentController');
 Route::get('/project/{id}/task/create', 'TaskController@createTask')->name('task.createTask');
+Route::get('/project/{id}/task/link', 'TaskController@link')->name('task.link');
+Route::post('/project/{id}/task/link', 'TaskController@linkUserTask')->name('task.linkUserTask');
 Route::get('/project/{id}/user/link', 'ProjectController@formLinkUserProject')->name('project.formLinkUserProject');
 Route::post('/project/{id}/user/link', 'ProjectController@linkUserProject')->name('project.linkUserProject');

@@ -95,7 +95,7 @@ class ProjectController extends Controller
     }
 
     public function destroy($project) {
-      $project = Project::findOrFail($project);
+      $project = Auth::user()->projects->where('id', $project->id)->first();
       $project->delete();
       return redirect(route('project.index'));
     }

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Project;
 use App\Task;
 use App\Level;
+use App\User;
 
 class TaskController extends Controller
 {
@@ -36,14 +37,25 @@ class TaskController extends Controller
         return view('task.show', compact('task'));
     }
 
-    public function create($id) {
-
-    }
-
     public function createTask($id) {
         $project = Auth::user()->projects->where('id', $id)->first();
         $levels = Level::get();
         return view('task.create', compact(['project', 'levels']));
+    }
+
+    public function link($id){
+      $task = Task::findOrFail($id);
+      $userInTask = $task->user;
+      $usersInProject = $task->project->users;
+      $users = $this->check_diff_multi($usersInProject, $userInTask);
+      return view('task.link', compact(['task', 'users']));
+    }
+
+    public function linkUserTask(Request $request, $task) {
+      $task = Task::findOrFail($task);
+      $task->user_id = $request->user_id;
+      $task->save();
+      return redirect(route('project.show', $task->project->id));
     }
 
     public function store(Request $request) {
@@ -64,5 +76,19 @@ class TaskController extends Controller
         $task = Task::findOrFail($task);
         $task->delete();
         return redirect(route('project.show', $task->project_id));
+    }
+
+    public function check_diff_multi($array1, $array2){
+      $result = array();
+      foreach($array1 as $key => $val) {
+           if(isset($array2[$key])){
+             if(is_array($val) && $array2[$key]){
+                 $result[$key] = check_diff_multi($val, $array2[$key]);
+             }
+         } else {
+             $result[$key] = $val;
+         }
+      }
+      return $result;
     }
 }
