@@ -91,7 +91,7 @@ class ProjectController extends Controller
       DB::table('project_user')->insert(
         ['project_id' => $project->id, 'user_id' => $user->id]
       );
-      return redirect(route('project.index'));
+      return redirect(route('project.show', $project));
     }
 
     public function destroy($project) {
