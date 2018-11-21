@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Project;
 use App\Task;
 use App\Level;
+use App\Status;
 use App\User;
 
 class TaskController extends Controller
@@ -70,6 +71,25 @@ class TaskController extends Controller
         $task->status_id = 1;
         $task->save();
         return redirect(route('project.show', $request->project_id));
+    }
+
+    public function edit($id) {
+        $task = Task::findOrFail($id);
+        $levels = Level::get();
+        $statuses = Status::get();
+        return view('task.edit', compact(['task', 'levels', 'statuses']));
+    }
+
+    public function update(Request $request, $id) {
+        $task = Task::findOrFail($id);
+        $task->name = $request->name;
+        $task->description = $request->description;
+        $task->start = date("Y-m-d H:i:s", strtotime($request->start));
+        $task->end = date("Y-m-d H:i:s", strtotime($request->end));
+        $task->status_id = $request->status_id;
+        $task->level_id = $request->level_id;
+        $task->save();
+        return redirect(route('project.show', $task->project->id));
     }
 
     public function destroy($task) {

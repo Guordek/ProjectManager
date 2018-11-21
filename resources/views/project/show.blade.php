@@ -21,7 +21,6 @@
                   <th scope="col">Level</th>
                   <th scope="col">Assigned to</th>
                   <th scope="col">Actions</th>
-                  <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
@@ -36,6 +35,10 @@
                   <td class="column-verticallineMiddle form-inline">
                     {!! Form::open(['method' => 'get', 'url' => route('task.show', $task)]) !!}
                       {!! Form::submit('Show', ['class' => 'btn btn-link']) !!}
+                    {!! Form::close() !!}
+
+                    {!! Form::open(['method' => 'get', 'url' => route('task.edit', $task)]) !!}
+                      {!! Form::submit('Edit', ['class' => 'btn btn-link']) !!}
                     {!! Form::close() !!}
 
                     {!! Form::open(['method' => 'get', 'url' => route('task.link', $task)]) !!}
