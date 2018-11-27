@@ -44,6 +44,29 @@ class TaskController extends Controller
         return view('task.create', compact(['project', 'levels']));
     }
 
+    public function store(Request $request) {
+        $project = Project::findOrFail($request->project_id);
+        $dateTaskStart = date("Y-m-d H:i:s", strtotime($request->start));
+        $datetaskEnd = date("Y-m-d H:i:s", strtotime($request->end));
+        $levels = Level::get();
+
+        if($request->end < $request->start || $dateTaskStart < $project->start || $datetaskEnd > $project->end) {
+          return redirect()->back()->withErrors('Error when creating task. Check starting and ending date.');
+        } else {
+          $task = new Task;
+          $task->name = $request->name;
+          $task->description = $request->description;
+          $task->start = $dateTaskStart;
+          $task->end = $datetaskEnd;
+          $task->project_id = $request->project_id;
+          $task->user_id = Auth::user()->id;
+          $task->level_id = $request->level_id;
+          $task->status_id = 1;
+          $task->save();
+          return redirect(route('project.show', $request->project_id))->withSuccess('Task successfully registered');
+        }
+    }
+
     public function link($id){
       $task = Task::findOrFail($id);
       $userInTask = $task->user;
@@ -56,29 +79,7 @@ class TaskController extends Controller
       $task = Task::findOrFail($task);
       $task->user_id = $request->user_id;
       $task->save();
-      return redirect(route('project.show', $task->project->id));
-    }
-
-    public function store(Request $request) {
-        $project = Project::findOrFail($request->project_id);
-        $dateTaskStart = date("Y-m-d H:i:s", strtotime($request->start));
-        $datetaskEnd = date("Y-m-d H:i:s", strtotime($request->end));
-
-        if($request->end < $request->start || $dateTaskStart < $project->start || $datetaskEnd > $project->end) {
-          return redirect(route('project.show', $request->project_id));
-        } else {
-          $task = new Task;
-          $task->name = $request->name;
-          $task->description = $request->description;
-          $task->start = $dateTaskStart
-          $task->end = $datetaskEnd
-          $task->project_id = $request->project_id;
-          $task->user_id = Auth::user()->id;
-          $task->level_id = $request->level_id;
-          $task->status_id = 1;
-          $task->save();
-          return redirect(route('project.show', $request->project_id));
-        }
+      return redirect(route('project.show', $task->project->id))->withSuccess('User successfully assigned to the task');
     }
 
     public function edit($id) {
@@ -90,20 +91,29 @@ class TaskController extends Controller
 
     public function update(Request $request, $id) {
         $task = Task::findOrFail($id);
-        $task->name = $request->name;
-        $task->description = $request->description;
-        $task->start = date("Y-m-d H:i:s", strtotime($request->start));
-        $task->end = date("Y-m-d H:i:s", strtotime($request->end));
-        $task->status_id = $request->status_id;
-        $task->level_id = $request->level_id;
-        $task->save();
-        return redirect(route('project.show', $task->project->id));
+        $project = $task->project;
+        $dateTaskStart = date("Y-m-d H:i:s", strtotime($request->start));
+        $datetaskEnd = date("Y-m-d H:i:s", strtotime($request->end));
+        $levels = Level::get();
+
+        if($request->end < $request->start || $dateTaskStart < $project->start || $datetaskEnd > $project->end) {
+          return redirect()->back()->withErrors('Error when creating task. Check starting and ending date.');
+        } else {
+          $task->name = $request->name;
+          $task->description = $request->description;
+          $task->start = date("Y-m-d H:i:s", strtotime($request->start));
+          $task->end = date("Y-m-d H:i:s", strtotime($request->end));
+          $task->status_id = $request->status_id;
+          $task->level_id = $request->level_id;
+          $task->save();
+          return redirect(route('project.show', $task->project->id))->withSuccess('Task successfully updated');
+        }
     }
 
     public function destroy($task) {
         $task = Task::findOrFail($task);
         $task->delete();
-        return redirect(route('project.show', $task->project_id));
+        return redirect(route('project.show', $task->project_id))->withSuccess('Task successfully deleted');
     }
 
     public function check_diff_multi($array1, $array2){

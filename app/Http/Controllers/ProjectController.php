@@ -58,7 +58,7 @@ class ProjectController extends Controller
         $project->save();
         $user = Auth::user()->id;
         $project->users()->sync($user);
-        return redirect(route('project.index'));
+        return redirect(route('project.index'))->withSuccess('Project successfully stored');
       }
     }
 
@@ -78,7 +78,7 @@ class ProjectController extends Controller
       $project->category_id = $request->category_id;
       $project->status_id = $request->status_id;
       $project->save();
-      return view('project.show', compact('project'));
+      return redirect(route('project.show', $project))->withSuccess('Project successfully updated');
     }
 
     public function formLinkUserProject($id) {
@@ -95,13 +95,13 @@ class ProjectController extends Controller
       DB::table('project_user')->insert(
         ['project_id' => $project->id, 'user_id' => $user->id]
       );
-      return redirect(route('project.show', $project));
+      return redirect(route('project.show', $project))->withSuccess('User successfully added to the project');
     }
 
     public function destroy($project) {
       $project = Auth::user()->projects->where('id', $project)->first();
       $project->delete();
-      return redirect(route('project.index'));
+      return redirect(route('project.index'))->withSuccess('Project successfully deleted');
     }
 
     public function check_diff_multi($array1, $array2){

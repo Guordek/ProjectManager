@@ -4,6 +4,13 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
+          @if(session('success'))
+              <div class="row col-lg-12">
+                  <div class="alert alert-success">
+                      <span>{{session('success')}}</span>
+                  </div>
+              </div>
+          @endif
           <h1>{{ $project->name }} | [{{ $project->status->name }}]</h1>
             <p>
               {!! Form::open(['method' => 'get', 'url' => route('project.edit', $project)]) !!}
