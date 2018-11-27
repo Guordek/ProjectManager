@@ -94,22 +94,26 @@ class ProjectController extends Controller
     }
 
     public function linkUserProject(Request $request) {
-      $project = Auth::user()->projects->where('id', $request->project_id)->first();
-      $user = User::get()->where('id', $request->user_id)->first();
-      $query = DB::table('project_user')
-              ->select('project_id', 'user_id')
-              ->where([
-                ['project_id', $project->id],
-                ['user_id', $user->id],
-              ])->get();
-              
-      if($query->isEmpty()) {
-        DB::table('project_user')->insert(
-          ['project_id' => $project->id, 'user_id' => $user->id]
-        );
-        return redirect(route('project.show', $project))->withSuccess('User successfully added to the project');
+      if($request->user_id != null) {
+        $project = Auth::user()->projects->where('id', $request->project_id)->first();
+        $user = User::get()->where('id', $request->user_id)->first();
+        $query = DB::table('project_user')
+                ->select('project_id', 'user_id')
+                ->where([
+                  ['project_id', $project->id],
+                  ['user_id', $user->id],
+                ])->get();
+
+        if($query->isEmpty()) {
+          DB::table('project_user')->insert(
+            ['project_id' => $project->id, 'user_id' => $user->id]
+          );
+          return redirect(route('project.show', $project))->withSuccess('User successfully added to the project');
+        } else {
+          return redirect()->back()->withErrors('User already exists in this project.');
+        }
       } else {
-        return redirect()->back()->withErrors('User already exists in this project.');
+        return redirect()->back()->withErrors('You need to select a user.');
       }
     }
 
