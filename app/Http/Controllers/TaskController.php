@@ -60,17 +60,21 @@ class TaskController extends Controller
     }
 
     public function store(Request $request) {
-        $task = new Task;
-        $task->name = $request->name;
-        $task->description = $request->description;
-        $task->start = date("Y-m-d H:i:s", strtotime($request->start));
-        $task->end = date("Y-m-d H:i:s", strtotime($request->end));
-        $task->project_id = $request->project_id;
-        $task->user_id = Auth::user()->id;
-        $task->level_id = $request->level_id;
-        $task->status_id = 1;
-        $task->save();
-        return redirect(route('project.show', $request->project_id));
+        if($request->end < $request->start) {
+          return redirect(route('project.show', $request->project_id));
+        } else {
+          $task = new Task;
+          $task->name = $request->name;
+          $task->description = $request->description;
+          $task->start = date("Y-m-d H:i:s", strtotime($request->start));
+          $task->end = date("Y-m-d H:i:s", strtotime($request->end));
+          $task->project_id = $request->project_id;
+          $task->user_id = Auth::user()->id;
+          $task->level_id = $request->level_id;
+          $task->status_id = 1;
+          $task->save();
+          return redirect(route('project.show', $request->project_id));
+        }
     }
 
     public function edit($id) {

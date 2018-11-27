@@ -45,17 +45,21 @@ class ProjectController extends Controller
     }
 
     public function store(Request $request) {
-      $project = new Project;
-      $project->name = $request->name;
-      $project->description = $request->description;
-      $project->start = date("Y-m-d H:i:s", strtotime($request->start));
-      $project->end = date("Y-m-d H:i:s", strtotime($request->end));
-      $project->category_id = $request->category_id;
-      $project->status_id = 1;
-      $project->save();
-      $user = Auth::user()->id;
-      $project->users()->sync($user);
-      return redirect(route('project.index'));
+      if($request->end < $request->start) {
+        return redirect(route('project.index'));
+      } else {
+        $project = new Project;
+        $project->name = $request->name;
+        $project->description = $request->description;
+        $project->start = date("Y-m-d H:i:s", strtotime($request->start));
+        $project->end = date("Y-m-d H:i:s", strtotime($request->end));
+        $project->category_id = $request->category_id;
+        $project->status_id = 1;
+        $project->save();
+        $user = Auth::user()->id;
+        $project->users()->sync($user);
+        return redirect(route('project.index'));
+      }
     }
 
     public function edit($id) {
@@ -95,7 +99,7 @@ class ProjectController extends Controller
     }
 
     public function destroy($project) {
-      $project = Auth::user()->projects->where('id', $project->id)->first();
+      $project = Auth::user()->projects->where('id', $project)->first();
       $project->delete();
       return redirect(route('project.index'));
     }
