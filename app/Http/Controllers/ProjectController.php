@@ -46,7 +46,7 @@ class ProjectController extends Controller
 
     public function store(Request $request) {
       if($request->end < $request->start) {
-        return redirect(route('project.index'));
+        return redirect()->back()->withErrors('Error when creating the project. Check starting and ending date.');
       } else {
         $project = new Project;
         $project->name = $request->name;
@@ -70,15 +70,19 @@ class ProjectController extends Controller
     }
 
     public function update(Request $request, $id) {
-      $project = Auth::user()->projects->where('id', $id)->first();
-      $project->name = $request->name;
-      $project->description = $request->description;
-      $project->start = date("Y-m-d H:i:s", strtotime($request->start));
-      $project->end = date("Y-m-d H:i:s", strtotime($request->end));
-      $project->category_id = $request->category_id;
-      $project->status_id = $request->status_id;
-      $project->save();
-      return redirect(route('project.show', $project))->withSuccess('Project successfully updated');
+      if($request->end < $request->start) {
+        return redirect()->back()->withErrors('Error when updating the project. Check starting and ending date.');
+      } else {
+        $project = Auth::user()->projects->where('id', $id)->first();
+        $project->name = $request->name;
+        $project->description = $request->description;
+        $project->start = date("Y-m-d H:i:s", strtotime($request->start));
+        $project->end = date("Y-m-d H:i:s", strtotime($request->end));
+        $project->category_id = $request->category_id;
+        $project->status_id = $request->status_id;
+        $project->save();
+        return redirect(route('project.show', $project))->withSuccess('Project successfully updated');
+      }
     }
 
     public function formLinkUserProject($id) {
