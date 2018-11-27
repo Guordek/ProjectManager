@@ -60,14 +60,18 @@ class TaskController extends Controller
     }
 
     public function store(Request $request) {
-        if($request->end < $request->start) {
+        $project = Project::findOrFail($request->project_id);
+        $dateTaskStart = date("Y-m-d H:i:s", strtotime($request->start));
+        $datetaskEnd = date("Y-m-d H:i:s", strtotime($request->end));
+
+        if($request->end < $request->start || $dateTaskStart < $project->start || $datetaskEnd > $project->end) {
           return redirect(route('project.show', $request->project_id));
         } else {
           $task = new Task;
           $task->name = $request->name;
           $task->description = $request->description;
-          $task->start = date("Y-m-d H:i:s", strtotime($request->start));
-          $task->end = date("Y-m-d H:i:s", strtotime($request->end));
+          $task->start = $dateTaskStart
+          $task->end = $datetaskEnd
           $task->project_id = $request->project_id;
           $task->user_id = Auth::user()->id;
           $task->level_id = $request->level_id;

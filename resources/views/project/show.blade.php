@@ -15,10 +15,10 @@
               <thead>
                 <tr>
                   <th scope="col">Name</th>
-                  <th scope="col">Description</th>
                   <th scope="col">Starting date</th>
                   <th scope="col">Ending date</th>
                   <th scope="col">Level</th>
+                  <th scope="col">Status</th>
                   <th scope="col">Assigned to</th>
                   <th scope="col">Actions</th>
                 </tr>
@@ -27,10 +27,10 @@
                 @forelse($project->tasks->sortBy('end') as $task)
                 <tr>
                   <th scope="row">{{ $task->name }}</th>
-                  <td>{{ $task->description }}</td>
                   <td>{{ $task->start }}</td>
                   <td>{{ $task->end }}</td>
                   <td>{{ $task->level->name }}</td>
+                  <td>{{ $task->status->name }}</td>
                   <td>{{ $task->user->name }}</td>
                   <td class="column-verticallineMiddle form-inline">
                     {!! Form::open(['method' => 'get', 'url' => route('task.show', $task)]) !!}
