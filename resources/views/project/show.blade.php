@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
           <h1>{{ $project->name }} | [{{ $project->status->name }}]</h1>
-          <small>{{ $project->start }} to {{ $project->end }}</small>
+          {{ $project->start }} to {{ $project->end }}
             <p>
               {!! Form::open(['method' => 'get', 'url' => route('project.edit', $project)]) !!}
                 {!! Form::submit('Edit the project', ['class' => 'btn btn-primary']) !!}

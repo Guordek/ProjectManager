@@ -36,7 +36,6 @@
 
               <div class="card-body">
                 <p>Create a new one</p>
-                <a href="{{ route('project.create') }}" class="btn btn-primary">Create</a>
               </div>
           </div>
           @endforelse

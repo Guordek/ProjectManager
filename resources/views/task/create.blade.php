@@ -45,7 +45,7 @@
 @section('script')
 <script>
   $(function() {
-    $(".datepicker").datepicker();
+    $('.datepicker').datepicker();
   });
-  </script>
+</script>
 @endsection

@@ -17,8 +17,8 @@ class CreateProjectsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->longText('description');
-            $table->date('start');
-            $table->date('end');
+            $table->dateTime('start');
+            $table->dateTime('end');
             $table->integer('category_id')->unsigned();
             $table->integer('status_id')->unsigned();
             $table->timestamps();
