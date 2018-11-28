@@ -51,7 +51,8 @@ class TaskController extends Controller
         $levels = Level::get();
 
         if($request->end < $request->start || $dateTaskStart < $project->start || $datetaskEnd > $project->end) {
-          return redirect()->back()->withErrors('Error when creating task. Check starting and ending date.');
+          flash('Error when creating task. Check starting and ending date')->error();
+          return redirect()->back();
         } else {
           $task = new Task;
           $task->name = $request->name;
@@ -63,7 +64,9 @@ class TaskController extends Controller
           $task->level_id = $request->level_id;
           $task->status_id = 1;
           $task->save();
-          return redirect(route('project.show', $request->project_id))->withSuccess('Task successfully registered');
+
+          flash('Task successfully registered')->success();
+          return redirect(route('project.show', $request->project_id));
         }
     }
 
@@ -79,7 +82,9 @@ class TaskController extends Controller
       $task = Task::findOrFail($task);
       $task->user_id = $request->user_id;
       $task->save();
-      return redirect(route('project.show', $task->project->id))->withSuccess('User successfully assigned to the task');
+
+      flash('User successfully assigned to the task')->success();
+      return redirect(route('project.show', $task->project->id));
     }
 
     public function edit($id) {
@@ -97,7 +102,8 @@ class TaskController extends Controller
         $levels = Level::get();
 
         if($request->end < $request->start || $dateTaskStart < $project->start || $datetaskEnd > $project->end) {
-          return redirect()->back()->withErrors('Error when creating task. Check starting and ending date.');
+          flash('Error when creating task. Check starting and ending date')->error();
+          return redirect()->back();
         } else {
           $task->name = $request->name;
           $task->description = $request->description;
@@ -106,14 +112,18 @@ class TaskController extends Controller
           $task->status_id = $request->status_id;
           $task->level_id = $request->level_id;
           $task->save();
-          return redirect(route('project.show', $task->project->id))->withSuccess('Task successfully updated');
+
+          flash('Task successfully updated')->success();
+          return redirect(route('project.show', $task->project->id));
         }
     }
 
     public function destroy($task) {
         $task = Task::findOrFail($task);
         $task->delete();
-        return redirect(route('project.show', $task->project_id))->withSuccess('Task successfully deleted');
+
+        flash('Task successfully deleted')->success();
+        return redirect(route('project.show', $task->project_id));
     }
 
     public function check_diff_multi($array1, $array2){

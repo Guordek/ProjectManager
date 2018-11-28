@@ -4,6 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
+            @include('flash::message')
             <h1>Create a new project</h1>
             {!! Form::open(['method' => 'put', 'url' => route('project.update', $project->id)]) !!}
               <div class="form-group">
@@ -54,13 +55,6 @@
             {!! Form::close() !!}
         </div>
     </div>
-    @if(!empty($errors->first()))
-        <div class="row col-lg-12">
-            <div class="alert alert-danger">
-                <span>{{ $errors->first() }}</span>
-            </div>
-        </div>
-    @endif
 </div>
 @endsection
 

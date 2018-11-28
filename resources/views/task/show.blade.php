@@ -4,6 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
+          @include('flash::message')
           <div class="card" style="width: 100%;">
             <div class="card-body">
               <h5 class="card-title">{{ $task->name }}</h5>

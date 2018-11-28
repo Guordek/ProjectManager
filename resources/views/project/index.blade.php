@@ -4,13 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-          @if(session('success'))
-              <div class="row col-lg-12">
-                  <div class="alert alert-success">
-                      <span>{{session('success')}}</span>
-                  </div>
-              </div>
-          @endif
+          @include('flash::message')
           <h1>Your projects</h1>
           @forelse ($projects as $project)
             <div class="card">

@@ -4,6 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
+          @include('flash::message')
           <h1>Link user to "{{ $project->name }}"</h1>
           {!! Form::open(['url' => route('project.linkUserProject', $project->id)]) !!}
             <div class="form-group">
@@ -21,12 +22,5 @@
           {!! Form::close() !!}
       </div>
     </div>
-    @if(!empty($errors->first()))
-        <div class="row col-lg-12">
-            <div class="alert alert-danger">
-                <span>{{ $errors->first() }}</span>
-            </div>
-        </div>
-    @endif
 </div>
 @endsection

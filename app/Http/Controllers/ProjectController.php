@@ -46,7 +46,8 @@ class ProjectController extends Controller
 
     public function store(Request $request) {
       if($request->end < $request->start) {
-        return redirect()->back()->withErrors('Error when creating the project. Check starting and ending date.');
+        flash('Error when creating the project. Check starting and ending date')->error();
+        return redirect()->back();
       } else {
         $project = new Project;
         $project->name = $request->name;
@@ -58,7 +59,8 @@ class ProjectController extends Controller
         $project->save();
         $user = Auth::user()->id;
         $project->users()->sync($user);
-        return redirect(route('project.index'))->withSuccess('Project successfully stored');
+        flash('Project successfully stored')->success();
+        return redirect(route('project.index'));
       }
     }
 
@@ -71,7 +73,8 @@ class ProjectController extends Controller
 
     public function update(Request $request, $id) {
       if($request->end < $request->start) {
-        return redirect()->back()->withErrors('Error when updating the project. Check starting and ending date.');
+        flash('Error when updating the project. Check starting and ending date')->error();
+        return redirect()->back();
       } else {
         $project = Auth::user()->projects->where('id', $id)->first();
         $project->name = $request->name;
@@ -81,7 +84,9 @@ class ProjectController extends Controller
         $project->category_id = $request->category_id;
         $project->status_id = $request->status_id;
         $project->save();
-        return redirect(route('project.show', $project))->withSuccess('Project successfully updated');
+
+        flash('Project successfully updated')->success();
+        return redirect(route('project.show', $project));
       }
     }
 
@@ -108,19 +113,24 @@ class ProjectController extends Controller
           DB::table('project_user')->insert(
             ['project_id' => $project->id, 'user_id' => $user->id]
           );
-          return redirect(route('project.show', $project))->withSuccess('User successfully added to the project');
+
+          flash('User successfully added to the project')->success();
+          return redirect(route('project.show', $project));
         } else {
-          return redirect()->back()->withErrors('User already exists in this project.');
+          flash('User already exists in this project')->error();
+          return redirect()->back();
         }
       } else {
-        return redirect()->back()->withErrors('You need to select a user.');
+        flash('You need to select a user')->error();
+        return redirect()->back();
       }
     }
 
     public function destroy($project) {
       $project = Auth::user()->projects->where('id', $project)->first();
       $project->delete();
-      return redirect(route('project.index'))->withSuccess('Project successfully deleted');
+      flash('Project successfully deleted')->success();
+      return redirect(route('project.index'));
     }
 
     public function check_diff_multi($array1, $array2){
