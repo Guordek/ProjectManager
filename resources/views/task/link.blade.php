@@ -4,7 +4,6 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-          @include('flash::message')
           <h1>Link user to "{{ $task->name }}"</h1>
           {!! Form::open(['url' => route('task.linkUserTask', $task)]) !!}
             <div class="form-group">

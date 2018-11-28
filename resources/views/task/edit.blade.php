@@ -4,7 +4,6 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-          @include('flash::message')
           <h1>{{ $task->name }}</h1>
           {!! Form::open(['method' => 'put', 'url' => route('task.update', $task->id)]) !!}
             <div class="form-group">

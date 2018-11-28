@@ -22,6 +22,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 </head>
 <body>
@@ -79,8 +80,21 @@
 
         <main class="py-4">
             @yield('content')
+            <div class="flash-msg">
+              <div class="container">
+                  <div class="row justify-content-center">
+                    <div class="col-md-12">
+                      @include('flash::message')
+                    </div>
+                  </div>
+              </div>
+            </div>
         </main>
     </div>
 </body>
 @yield('script')
+<script>
+  $('div.alert').not('.alert-important').fadeIn(350);
+  $('div.alert').not('.alert-important').delay(3000).fadeOut(350);
+</script>
 </html>

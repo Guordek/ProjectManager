@@ -4,7 +4,6 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-          @include('flash::message')
           <h1>{{ $project->name }} | [{{ $project->status->name }}]</h1>
           <small>{{ $project->start }} to {{ $project->end }}</small>
             <p>

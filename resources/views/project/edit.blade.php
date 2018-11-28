@@ -4,7 +4,6 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            @include('flash::message')
             <h1>Create a new project</h1>
             {!! Form::open(['method' => 'put', 'url' => route('project.update', $project->id)]) !!}
               <div class="form-group">
