@@ -36,6 +36,7 @@ class ProjectController extends Controller
 
     public function show($id) {
       $project = Auth::user()->projects->where('id', $id)->first();
+      $date = date("Y-m-d");
       $statusClosed = Status::get()->where('name', 'Closed')->first();
       $nbrTaskComplete = $project->tasks->where('status_id', $statusClosed->id)->count();
       if($nbrTaskComplete != 0) {
@@ -43,7 +44,7 @@ class ProjectController extends Controller
       } else {
         $progress = 0;
       }
-      return view('project.show', compact(['project', 'progress']));
+      return view('project.show', compact(['project', 'progress', 'date']));
     }
 
     public function create() {

@@ -29,35 +29,43 @@
               </thead>
               <tbody>
                 @forelse($project->tasks->sortBy('end') as $task)
-                <tr>
-                  <th scope="row">{{ $task->name }}</th>
-                  <td>{{ $task->start }}</td>
-                  <td>{{ $task->end }}</td>
-                  <td>{{ $task->level->name }}</td>
-                  <td>{{ $task->status->name }}</td>
-                  <td>{{ $task->user->name }}</td>
-                  <td class="column-verticallineMiddle form-inline">
-                    {!! Form::open(['method' => 'get', 'url' => route('task.show', $task)]) !!}
-                      {!! Form::submit('Show', ['class' => 'btn btn-link']) !!}
-                    {!! Form::close() !!}
+                  @if($date >= $task->start && $date <= $task->end)
+                  <tr class="table-warning">
+                  @elseif($date > $task->end)
+                  <tr class="table-danger">
+                  @elseif($date < $task->start && $date < $task->end)
+                  <tr class="table-primary">
+                  @else
+                  <tr>
+                  @endif
+                    <th scope="row">{{ $task->name }}</th>
+                    <td>{{ $task->start }}</td>
+                    <td>{{ $task->end }}</td>
+                    <td>{{ $task->level->name }}</td>
+                    <td>{{ $task->status->name }}</td>
+                    <td>{{ $task->user->name }}</td>
+                    <td class="column-verticallineMiddle form-inline">
+                      {!! Form::open(['method' => 'get', 'url' => route('task.show', $task)]) !!}
+                        {!! Form::submit('Show', ['class' => 'btn btn-link']) !!}
+                      {!! Form::close() !!}
 
-                    {!! Form::open(['method' => 'get', 'url' => route('task.edit', $task)]) !!}
-                      {!! Form::submit('Edit', ['class' => 'btn btn-link']) !!}
-                    {!! Form::close() !!}
+                      {!! Form::open(['method' => 'get', 'url' => route('task.edit', $task)]) !!}
+                        {!! Form::submit('Edit', ['class' => 'btn btn-link']) !!}
+                      {!! Form::close() !!}
 
-                    {!! Form::open(['method' => 'get', 'url' => route('task.link', $task)]) !!}
-                      {!! Form::submit('Link', ['class' => 'btn btn-link']) !!}
-                    {!! Form::close() !!}
+                      {!! Form::open(['method' => 'get', 'url' => route('task.link', $task)]) !!}
+                        {!! Form::submit('Link', ['class' => 'btn btn-link']) !!}
+                      {!! Form::close() !!}
 
-                    {!! Form::open(['method' => 'delete', 'url' => route('task.destroy', $task)]) !!}
-                      {!! Form::submit('Delete', ['class' => 'btn btn-link']) !!}
-                    {!! Form::close() !!}
-                  </td>
-                </tr>
+                      {!! Form::open(['method' => 'delete', 'url' => route('task.destroy', $task)]) !!}
+                        {!! Form::submit('Delete', ['class' => 'btn btn-link']) !!}
+                      {!! Form::close() !!}
+                    </td>
+                  </tr>
                 @empty
-                <tr>
-                  <td colspan="8">No pending task</td>
-                </tr>
+                  <tr>
+                    <td colspan="8">No pending task</td>
+                  </tr>
                 @endforelse
               </tbody>
             </table>
