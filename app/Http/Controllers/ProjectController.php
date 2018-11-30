@@ -38,7 +38,11 @@ class ProjectController extends Controller
       $project = Auth::user()->projects->where('id', $id)->first();
       $statusClosed = Status::get()->where('name', 'Closed')->first();
       $nbrTaskComplete = $project->tasks->where('status_id', $statusClosed->id)->count();
-      $progress = round($nbrTaskComplete / $project->tasks->count() * 100, 2);
+      if($nbrTaskComplete != 0) {
+        $progress = round($nbrTaskComplete / $project->tasks->count() * 100, 2);
+      } else {
+        $progress = 0;
+      }
       return view('project.show', compact(['project', 'progress']));
     }
 
