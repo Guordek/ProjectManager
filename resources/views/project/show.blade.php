@@ -11,6 +11,9 @@
                 {!! Form::submit('Edit the project', ['class' => 'btn btn-primary']) !!}
               {!! Form::close() !!}
             </p>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" style="width: {!! $progress !!}%;" aria-valuenow="{!! $progress !!}" aria-valuemin="0" aria-valuemax="100">{!! $progress !!}% complete</div>
+            </div>
             <br/>
             <table class="table table-hover">
               <thead>

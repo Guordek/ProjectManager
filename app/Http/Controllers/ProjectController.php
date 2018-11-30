@@ -36,7 +36,10 @@ class ProjectController extends Controller
 
     public function show($id) {
       $project = Auth::user()->projects->where('id', $id)->first();
-      return view('project.show', compact('project'));
+      $statusClosed = Status::get()->where('name', 'Closed')->first();
+      $nbrTaskComplete = $project->tasks->where('status_id', $statusClosed->id)->count();
+      $progress = round($nbrTaskComplete / $project->tasks->count() * 100, 2);
+      return view('project.show', compact(['project', 'progress']));
     }
 
     public function create() {
