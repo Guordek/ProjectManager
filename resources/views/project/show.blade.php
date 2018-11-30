@@ -54,7 +54,7 @@
                       {!! Form::close() !!}
 
                       {!! Form::open(['method' => 'get', 'url' => route('task.link', $task)]) !!}
-                        {!! Form::submit('Link', ['class' => 'btn btn-link']) !!}
+                        {!! Form::submit('Assign', ['class' => 'btn btn-link']) !!}
                       {!! Form::close() !!}
 
                       {!! Form::open(['method' => 'delete', 'url' => route('task.destroy', $task)]) !!}

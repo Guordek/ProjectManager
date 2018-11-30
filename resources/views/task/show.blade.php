@@ -9,7 +9,9 @@
               <h5 class="card-title">{{ $task->name }}</h5>
               <h6 class="card-subtitle mb-2 text-muted">{{ $task->created_at }}</h6>
               <hr>
-              <p class="card-text">{{ $task->description }}</p>
+              <p class="card-text">
+                <textarea class="form-control" rows="8" disabled>{{ $task->description }}</textarea>
+              </p>
               <div class="card-footer text-muted">
                 Assigned to {{ $task->user->name }}
               </div>
