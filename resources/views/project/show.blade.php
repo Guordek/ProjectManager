@@ -6,11 +6,13 @@
         <div class="col-md-12">
           <h1>{{ $project->name }} | [{{ $project->status->name }}]</h1>
           {{ $project->start }} to {{ $project->end }}
+            @if($project->created_by == Auth::user()->id)
             <p>
               {!! Form::open(['method' => 'get', 'url' => route('project.edit', $project)]) !!}
                 {!! Form::submit('Edit the project', ['class' => 'btn btn-primary']) !!}
               {!! Form::close() !!}
             </p>
+            @endif
             <div class="progress">
               <div class="progress-bar" role="progressbar" style="width: {!! $progress !!}%;" aria-valuenow="{!! $progress !!}" aria-valuemin="0" aria-valuemax="100">{!! $progress !!}% complete</div>
             </div>
