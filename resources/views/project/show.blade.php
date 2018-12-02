@@ -21,6 +21,7 @@
             <nav class="nav nav-tabs">
               <a class="nav-item nav-link active" href="#tasks" data-toggle="tab">Tasks</a>
               <a class="nav-item nav-link" href="#users" data-toggle="tab">Users</a>
+              <a class="nav-item nav-link" href="#calendar" data-toggle="tab">Calendar</a>
             </nav>
 
             <div class="tab-content">
@@ -97,9 +98,7 @@
                     <tr>
                       <th scope="row">{{ $user->name }}</th>
                       <td>{{ $user->email }}</td>
-                      <td>
-
-                      </td>
+                      <td></td>
                     </tr>
                     @empty
                     <tr>
@@ -111,6 +110,11 @@
                 {!! Form::open(['method' => 'get', 'url' => route('project.formLinkUserProject', $project->id)]) !!}
                   {!! Form::submit('Add a user to the project', ['class' => 'btn btn-primary float-left']) !!}
                 {!! Form::close() !!}
+              </div>
+              <div class="tab-pane fade" id="calendar">
+                <br>
+                {!! $calendar->calendar() !!}
+                {!! $calendar->script() !!}
               </div>
             </div>
         </div>

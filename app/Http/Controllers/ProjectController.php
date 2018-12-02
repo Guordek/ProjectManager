@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 use DB;
+
 use App\Project;
 use App\Category;
 use App\Status;
 use App\User;
+use App\Event;
 
 class ProjectController extends Controller
 {
@@ -36,6 +39,7 @@ class ProjectController extends Controller
 
     public function show($id) {
       $project = Auth::user()->projects->where('id', $id)->first();
+      $tasks = $project->tasks;
       $date = date("Y-m-d");
       $statusClosed = Status::get()->where('name', 'Closed')->first();
       $nbrTaskComplete = $project->tasks->where('status_id', $statusClosed->id)->count();
@@ -44,7 +48,27 @@ class ProjectController extends Controller
       } else {
         $progress = 0;
       }
-      return view('project.show', compact(['project', 'progress', 'date']));
+
+      $events = [];
+
+      if(!empty($tasks)) {
+        foreach ($tasks as $value) {
+          $events[] = \Calendar::event(
+            $value->name . ' ['. $value->status->name .']', //event title
+            true, //full day event?
+            $value->start, //start time (you can also use Carbon instead of DateTime)
+            $value->end, //end time (you can also use Carbon instead of DateTime)
+            $value->id, //optionally, you can specify an event ID
+            [
+              'url' => route('task.show', $value->id),
+            ]
+          );
+        }
+      }
+
+      $calendar = \Calendar::addEvents($events);
+
+      return view('project.show', compact(['project', 'progress', 'date', 'calendar']));
     }
 
     public function create() {
