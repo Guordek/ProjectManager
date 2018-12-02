@@ -19,12 +19,18 @@
             <br/>
 
             <nav class="nav nav-tabs">
-              <a class="nav-item nav-link active" href="#tasks" data-toggle="tab">Tasks</a>
+              <a class="nav-item nav-link active" href="#calendar" data-toggle="tab">Calendar</a>
+              <a class="nav-item nav-link" href="#tasks" data-toggle="tab">Tasks</a>
               <a class="nav-item nav-link" href="#users" data-toggle="tab">Users</a>
             </nav>
 
             <div class="tab-content">
-              <div class="tab-pane fade show active" id="tasks">
+              <div class="tab-pane fade show active" id="calendar">
+                <br>
+                {!! $calendar->calendar() !!}
+                {!! $calendar->script() !!}
+              </div>
+              <div class="tab-pane fade" id="tasks">
                 <table class="table table-hover">
                   <thead>
                     <tr>
@@ -97,9 +103,7 @@
                     <tr>
                       <th scope="row">{{ $user->name }}</th>
                       <td>{{ $user->email }}</td>
-                      <td>
-
-                      </td>
+                      <td></td>
                     </tr>
                     @empty
                     <tr>
