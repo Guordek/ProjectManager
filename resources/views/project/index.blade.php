@@ -24,9 +24,12 @@
                   {!! Form::open(['method' => 'get', 'url' => route('project.show', $project->id)]) !!}
                     {!! Form::submit('Show', ['class' => 'btn btn-primary float-left']) !!}
                   {!! Form::close() !!}
-                  {!! Form::open(['method' => 'delete', 'url' => route('project.destroy', $project)]) !!}
-                    {!! Form::submit('Delete', ['class' => 'btn btn-danger float-right']) !!}
-                  {!! Form::close() !!}
+
+                  @if($project->created_by == Auth::user()->id)
+                    {!! Form::open(['method' => 'delete', 'url' => route('project.destroy', $project)]) !!}
+                      {!! Form::submit('Delete', ['class' => 'btn btn-danger float-right']) !!}
+                    {!! Form::close() !!}
+                  @endif
                 </div>
             </div>
             <br>

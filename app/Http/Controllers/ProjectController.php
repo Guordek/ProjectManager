@@ -57,6 +57,7 @@ class ProjectController extends Controller
         flash('Error when creating the project. Check starting and ending date')->error();
         return redirect()->back();
       } else {
+        $user = Auth::user()->id;
         $project = new Project;
         $project->name = $request->name;
         $project->description = $request->description;
@@ -64,8 +65,8 @@ class ProjectController extends Controller
         $project->end = date("Y-m-d H:i:s", strtotime($request->end));
         $project->category_id = $request->category_id;
         $project->status_id = 1;
+        $project->created_by = $user;
         $project->save();
-        $user = Auth::user()->id;
         $project->users()->sync($user);
         flash('Project successfully stored')->success();
         return redirect(route('project.index'));

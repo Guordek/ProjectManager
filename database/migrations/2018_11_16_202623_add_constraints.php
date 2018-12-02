@@ -17,6 +17,7 @@ class AddConstraints extends Migration
       {
           $table->foreign('category_id')->references('id')->on('categories');
           $table->foreign('status_id')->references('id')->on('statuses');
+          $table->foreign('created_by')->references('id')->on('users');
       });
 
       Schema::table('tasks', function (Blueprint $table)
