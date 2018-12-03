@@ -56,13 +56,14 @@ class ProjectController extends Controller
       if(!empty($tasks)) {
         foreach ($tasks as $value) {
           $events[] = \Calendar::event(
-            $value->name . ' ['. $value->status->name .']', //event title
-            true, //full day event?
-            $value->start, //start time (you can also use Carbon instead of DateTime)
-            $value->end, //end time (you can also use Carbon instead of DateTime)
-            $value->id, //optionally, you can specify an event ID
+            $value->user->name . ' - ' . $value->name . ' ['. $value->status->name .']',
+            true,
+            $value->start,
+            $value->end,
+            $value->id,
             [
               'url' => route('task.show', $value->id),
+              'color' => '#3490dc',
             ]
           );
         }

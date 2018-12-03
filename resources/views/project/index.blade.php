@@ -26,7 +26,7 @@
                   {!! Form::close() !!}
 
                   @if($project->created_by == Auth::user()->id)
-                    {!! Form::open(['method' => 'delete', 'url' => route('project.destroy', $project)]) !!}
+                    {!! Form::open(['method' => 'delete', 'url' => route('project.destroy', $project), 'onsubmit' => 'return confirmDelete()']) !!}
                       {!! Form::submit('Delete', ['class' => 'btn btn-danger float-right']) !!}
                     {!! Form::close() !!}
                   @endif
@@ -48,4 +48,12 @@
         {!! Form::close() !!}
     </div>
 </div>
+@endsection
+
+@section('script')
+<script>
+  function confirmDelete() {
+      return confirm('Are you sure you want to delete ?');
+  }
+</script>
 @endsection
