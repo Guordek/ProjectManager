@@ -79,10 +79,7 @@ class ProjectController extends Controller
     }
 
     public function store(StoreProjectRequest $request) {
-      if(!$request->validated()) {
-        flash('Error when creating the project. Check starting and ending date')->error();
-        return redirect()->back();
-      } else {
+      if($request->validated()) {
         $user = Auth::user()->id;
         $project = new Project;
         $project->name = $request->name;
@@ -107,10 +104,7 @@ class ProjectController extends Controller
     }
 
     public function update(StoreProjectRequest $request, $id) {
-      if(!$request->validated()) {
-        flash('Error when updating the project. Check starting and ending date')->error();
-        return redirect()->back();
-      } else {
+      if($request->validated()) {
         $project = Auth::user()->projects->where('id', $id)->first();
         $project->name = $request->name;
         $project->description = $request->description;
