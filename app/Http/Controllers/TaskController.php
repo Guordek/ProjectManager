@@ -11,6 +11,8 @@ use App\Level;
 use App\Status;
 use App\User;
 
+use App\Http\Requests\StoreTaskRequest;
+
 class TaskController extends Controller
 {
     /**
@@ -44,16 +46,13 @@ class TaskController extends Controller
         return view('task.create', compact(['project', 'levels']));
     }
 
-    public function store(Request $request) {
+    public function store(StoreTaskRequest $request) {
         $project = Project::findOrFail($request->project_id);
         $dateTaskStart = date("Y-m-d H:i:s", strtotime($request->start));
         $datetaskEnd = date("Y-m-d H:i:s", strtotime($request->end));
         $levels = Level::get();
 
-        if($request->end < $request->start || $dateTaskStart < $project->start || $datetaskEnd > $project->end) {
-          flash('Error when creating task. Check starting and ending date')->error();
-          return redirect()->back();
-        } else {
+        if($request->validated()) {
           $task = new Task;
           $task->name = $request->name;
           $task->description = $request->description;
@@ -94,17 +93,14 @@ class TaskController extends Controller
         return view('task.edit', compact(['task', 'levels', 'statuses']));
     }
 
-    public function update(Request $request, $id) {
+    public function update(StoreTaskRequest $request, $id) {
         $task = Task::findOrFail($id);
         $project = $task->project;
         $dateTaskStart = date("Y-m-d H:i:s", strtotime($request->start));
         $datetaskEnd = date("Y-m-d H:i:s", strtotime($request->end));
         $levels = Level::get();
 
-        if($request->end < $request->start || $dateTaskStart < $project->start || $datetaskEnd > $project->end) {
-          flash('Error when creating task. Check starting and ending date')->error();
-          return redirect()->back();
-        } else {
+        if($request->validated()) {
           $task->name = $request->name;
           $task->description = $request->description;
           $task->start = date("Y-m-d H:i:s", strtotime($request->start));

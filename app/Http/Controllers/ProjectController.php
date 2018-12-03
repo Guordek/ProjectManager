@@ -13,6 +13,8 @@ use App\Status;
 use App\User;
 use App\Event;
 
+use App\Http\Requests\StoreProjectRequest;
+
 class ProjectController extends Controller
 {
     /**
@@ -76,11 +78,8 @@ class ProjectController extends Controller
       return view('project.create', compact(['categories']));
     }
 
-    public function store(Request $request) {
-      if($request->end < $request->start) {
-        flash('Error when creating the project. Check starting and ending date')->error();
-        return redirect()->back();
-      } else {
+    public function store(StoreProjectRequest $request) {
+      if($request->validated()) {
         $user = Auth::user()->id;
         $project = new Project;
         $project->name = $request->name;
@@ -104,11 +103,8 @@ class ProjectController extends Controller
       return view('project.edit', compact(['project', 'categories', 'statuses']));
     }
 
-    public function update(Request $request, $id) {
-      if($request->end < $request->start) {
-        flash('Error when updating the project. Check starting and ending date')->error();
-        return redirect()->back();
-      } else {
+    public function update(StoreProjectRequest $request, $id) {
+      if($request->validated()) {
         $project = Auth::user()->projects->where('id', $id)->first();
         $project->name = $request->name;
         $project->description = $request->description;
