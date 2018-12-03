@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+use App\Project;
+
 class StoreTaskRequest extends FormRequest
 {
     /**
@@ -23,9 +25,11 @@ class StoreTaskRequest extends FormRequest
      */
     public function rules()
     {
+        $project = Project::findOrFail($this->input('project_id'));
+
         return [
-          'start'    => 'required|date',
-          'end'      => 'required|date|after_or_equal:start',
+          'start'    => 'required|date|after_or_equal:'. $project->start,
+          'end'      => 'required|date|after_or_equal:start|before_or_equal:'. $project->end,
         ];
     }
 }

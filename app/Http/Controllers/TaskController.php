@@ -52,7 +52,7 @@ class TaskController extends Controller
         $datetaskEnd = date("Y-m-d H:i:s", strtotime($request->end));
         $levels = Level::get();
 
-        if(!$request->validated() || $dateTaskStart < $project->start || $datetaskEnd > $project->end) {
+        if(!$request->validated()) {
           flash('Error when creating task. Check starting and ending date')->error();
           return redirect()->back();
         } else {
@@ -103,7 +103,7 @@ class TaskController extends Controller
         $datetaskEnd = date("Y-m-d H:i:s", strtotime($request->end));
         $levels = Level::get();
 
-        if(!$request->validated() || $dateTaskStart < $project->start || $datetaskEnd > $project->end) {
+        if(!$request->validated()) {
           flash('Error when creating task. Check starting and ending date')->error();
           return redirect()->back();
         } else {
