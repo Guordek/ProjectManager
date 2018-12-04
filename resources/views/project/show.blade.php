@@ -65,17 +65,19 @@
                             {!! Form::submit('Show', ['class' => 'btn btn-link']) !!}
                           {!! Form::close() !!}
 
-                          {!! Form::open(['method' => 'get', 'url' => route('task.edit', $task)]) !!}
-                            {!! Form::submit('Edit', ['class' => 'btn btn-link']) !!}
-                          {!! Form::close() !!}
+                          @if($task->user_id == Auth::user()->id || $project->created_by == Auth::user()->id)
+                            {!! Form::open(['method' => 'get', 'url' => route('task.edit', $task)]) !!}
+                              {!! Form::submit('Edit', ['class' => 'btn btn-link']) !!}
+                            {!! Form::close() !!}
 
-                          {!! Form::open(['method' => 'get', 'url' => route('task.link', $task)]) !!}
-                            {!! Form::submit('Assign', ['class' => 'btn btn-link']) !!}
-                          {!! Form::close() !!}
+                            {!! Form::open(['method' => 'get', 'url' => route('task.link', $task)]) !!}
+                              {!! Form::submit('Assign', ['class' => 'btn btn-link']) !!}
+                            {!! Form::close() !!}
 
-                          {!! Form::open(['method' => 'delete', 'url' => route('task.destroy', $task)]) !!}
-                            {!! Form::submit('Delete', ['class' => 'btn btn-link']) !!}
-                          {!! Form::close() !!}
+                            {!! Form::open(['method' => 'delete', 'url' => route('task.destroy', $task), 'onsubmit' => 'return confirmDelete()']) !!}
+                              {!! Form::submit('Delete', ['class' => 'btn btn-link']) !!}
+                            {!! Form::close() !!}
+                          @endif
                         </td>
                       </tr>
                     @empty
@@ -120,4 +122,12 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script>
+  function confirmDelete() {
+      return confirm('Are you sure you want to delete ?');
+  }
+</script>
 @endsection
