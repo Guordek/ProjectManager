@@ -112,7 +112,7 @@ class TaskController extends Controller
         });
 
         if ($validator->fails()) {
-          flash('ogidhg')->error();
+          flash($validator->errors()->first())->error();
           return redirect()->back();
         }
 
