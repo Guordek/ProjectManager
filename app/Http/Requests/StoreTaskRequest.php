@@ -25,11 +25,11 @@ class StoreTaskRequest extends FormRequest
      */
     public function rules()
     {
-        $project = Project::findOrFail($this->input('project_id'));
+        /*$project = Project::findOrFail($this->input('project_id'));*/
 
         return [
-          'start'    => 'required|date|after_or_equal:'. $project->start,
-          'end'      => 'required|date|after_or_equal:start|before_or_equal:'. $project->end,
+          'start'    => 'required|date',
+          'end'      => 'required|date|after_or_equal:start',
         ];
     }
 }

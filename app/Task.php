@@ -15,6 +15,13 @@ class Task extends Model
         'name', 'description', 'start', 'end', 'project_id', 'user_id', 'level_id', 'status_id'
     ];
 
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'start',
+        'end',
+    ];
+
     public function project() {
       return $this->belongsTo('App\Project');
     }

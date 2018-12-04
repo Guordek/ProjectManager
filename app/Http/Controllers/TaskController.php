@@ -11,6 +11,8 @@ use App\Level;
 use App\Status;
 use App\User;
 
+use Validator;
+use Carbon\Carbon;
 use App\Http\Requests\StoreTaskRequest;
 
 class TaskController extends Controller
@@ -52,21 +54,19 @@ class TaskController extends Controller
         $datetaskEnd = date("Y-m-d H:i:s", strtotime($request->end));
         $levels = Level::get();
 
-        if($request->validated()) {
-          $task = new Task;
-          $task->name = $request->name;
-          $task->description = $request->description;
-          $task->start = $dateTaskStart;
-          $task->end = $datetaskEnd;
-          $task->project_id = $request->project_id;
-          $task->user_id = Auth::user()->id;
-          $task->level_id = $request->level_id;
-          $task->status_id = 1;
-          $task->save();
+        $task = new Task;
+        $task->name = $request->name;
+        $task->description = $request->description;
+        $task->start = $dateTaskStart;
+        $task->end = $datetaskEnd;
+        $task->project_id = $request->project_id;
+        $task->user_id = Auth::user()->id;
+        $task->level_id = $request->level_id;
+        $task->status_id = 1;
+        $task->save();
 
-          flash('Task successfully registered')->success();
-          return redirect(route('project.show', $request->project_id));
-        }
+        flash('Task successfully registered')->success();
+        return redirect(route('project.show', $request->project_id));
     }
 
     public function link($id){
@@ -94,24 +94,38 @@ class TaskController extends Controller
     }
 
     public function update(StoreTaskRequest $request, $id) {
-        $task = Task::findOrFail($id);
-        $project = $task->project;
-        $dateTaskStart = date("Y-m-d H:i:s", strtotime($request->start));
-        $datetaskEnd = date("Y-m-d H:i:s", strtotime($request->end));
-        $levels = Level::get();
+        $task = Task::findOrFail($id)->first();
+        $validator = Validator::make($request->all(), []);
 
-        if($request->validated()) {
-          $task->name = $request->name;
-          $task->description = $request->description;
-          $task->start = date("Y-m-d H:i:s", strtotime($request->start));
-          $task->end = date("Y-m-d H:i:s", strtotime($request->end));
-          $task->status_id = $request->status_id;
-          $task->level_id = $request->level_id;
-          $task->save();
+        $validator->after(function ($validator) use($request, $task) {
+          $start = Carbon::createFromFormat('Y-m-d', $request->start);
+          $end = Carbon::createFromFormat('Y-m-d', $request->end);
 
-          flash('Task successfully updated')->success();
-          return redirect(route('project.show', $task->project->id));
+          if ($start->lt($task->project->start)) {
+              $validator->errors()->add('start', 'Starting date need to be greater than project starting date');
+          }
+
+          if ($end->gt($task->project->end)) {
+              $validator->errors()->add('end', 'Ending date need to be smaller than project ending date');
+          }
+
+        });
+
+        if ($validator->fails()) {
+          flash('ogidhg')->error();
+          return redirect()->back();
         }
+
+        $task->name = $request->name;
+        $task->description = $request->description;
+        $task->start = date("Y-m-d H:i:s", strtotime($request->start));
+        $task->end = date("Y-m-d H:i:s", strtotime($request->end));
+        $task->status_id = $request->status_id;
+        $task->level_id = $request->level_id;
+        $task->save();
+
+        flash('Task successfully updated')->success();
+        return redirect(route('project.show', $task->project));
     }
 
     public function destroy($task) {

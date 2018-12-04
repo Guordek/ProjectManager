@@ -80,21 +80,19 @@ class ProjectController extends Controller
     }
 
     public function store(StoreProjectRequest $request) {
-      if($request->validated()) {
-        $user = Auth::user()->id;
-        $project = new Project;
-        $project->name = $request->name;
-        $project->description = $request->description;
-        $project->start = date("Y-m-d H:i:s", strtotime($request->start));
-        $project->end = date("Y-m-d H:i:s", strtotime($request->end));
-        $project->category_id = $request->category_id;
-        $project->status_id = 1;
-        $project->created_by = $user;
-        $project->save();
-        $project->users()->sync($user);
-        flash('Project successfully stored')->success();
-        return redirect(route('project.index'));
-      }
+      $user = Auth::user()->id;
+      $project = new Project;
+      $project->name = $request->name;
+      $project->description = $request->description;
+      $project->start = date("Y-m-d H:i:s", strtotime($request->start));
+      $project->end = date("Y-m-d H:i:s", strtotime($request->end));
+      $project->category_id = $request->category_id;
+      $project->status_id = 1;
+      $project->created_by = $user;
+      $project->save();
+      $project->users()->sync($user);
+      flash('Project successfully stored')->success();
+      return redirect(route('project.index'));
     }
 
     public function edit($id) {
@@ -105,19 +103,17 @@ class ProjectController extends Controller
     }
 
     public function update(StoreProjectRequest $request, $id) {
-      if($request->validated()) {
-        $project = Auth::user()->projects->where('id', $id)->first();
-        $project->name = $request->name;
-        $project->description = $request->description;
-        $project->start = date("Y-m-d H:i:s", strtotime($request->start));
-        $project->end = date("Y-m-d H:i:s", strtotime($request->end));
-        $project->category_id = $request->category_id;
-        $project->status_id = $request->status_id;
-        $project->save();
+      $project = Auth::user()->projects->where('id', $id)->first();
+      $project->name = $request->name;
+      $project->description = $request->description;
+      $project->start = date("Y-m-d H:i:s", strtotime($request->start));
+      $project->end = date("Y-m-d H:i:s", strtotime($request->end));
+      $project->category_id = $request->category_id;
+      $project->status_id = $request->status_id;
+      $project->save();
 
-        flash('Project successfully updated')->success();
-        return redirect(route('project.show', $project));
-      }
+      flash('Project successfully updated')->success();
+      return redirect(route('project.show', $project));
     }
 
     public function formLinkUserProject($id) {

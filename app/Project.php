@@ -15,6 +15,13 @@ class Project extends Model
         'name', 'description', 'start', 'end', 'category_id', 'status_id',
     ];
 
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'start',
+        'end',
+    ];
+
     public function tasks() {
       return $this->hasMany('App\Task');
     }

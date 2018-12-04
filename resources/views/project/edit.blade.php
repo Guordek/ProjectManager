@@ -41,11 +41,11 @@
               <div class="form-group row">
                 <div class="col">
                   {!! Form::label('start', 'Starting date') !!}
-                  {{ Form::text('start', $project->start, ['class' => 'form-control datepicker', 'autocomplete' => 'off', 'required']) }}
+                  {{ Form::text('start', $project->start->format('Y-m-d'), ['class' => 'form-control datepicker', 'autocomplete' => 'off', 'required']) }}
                 </div>
                 <div class="col">
                   {!! Form::label('end', 'Ending date') !!}
-                  {{ Form::text('end', $project->end, ['class' => 'form-control datepicker', 'autocomplete' => 'off', 'required']) }}
+                  {{ Form::text('end', $project->end->format('Y-m-d'), ['class' => 'form-control datepicker', 'autocomplete' => 'off', 'required']) }}
                 </div>
               </div>
               <div class="form-group">
@@ -60,7 +60,9 @@
 @section('script')
 <script>
   $(function() {
-    $(".datepicker").datepicker();
+    $(".datepicker").datepicker({
+      dateFormat: "yy-mm-dd"
+    });
   });
   </script>
 @endsection
