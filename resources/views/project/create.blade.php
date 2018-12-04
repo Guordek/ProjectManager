@@ -44,7 +44,9 @@
 @section('script')
 <script>
   $(function() {
-    $('.datepicker').datepicker();
+    $('.datepicker').datepicker({
+      dateFormat: "dd-mm-yy"
+    });
   });
 </script>
 @endsection

@@ -54,6 +54,27 @@ class TaskController extends Controller
         $datetaskEnd = date("Y-m-d H:i:s", strtotime($request->end));
         $levels = Level::get();
 
+        $validator = Validator::make($request->all(), []);
+
+        $validator->after(function ($validator) use($request, $project) {
+          $start = Carbon::createFromFormat('d-m-Y', $request->start);
+          $end = Carbon::createFromFormat('d-m-Y', $request->end);
+
+          if ($start->lt($project->start)) {
+              $validator->errors()->add('start', 'Starting date need to be greater than project starting date');
+          }
+
+          if ($end->gt($project->end)) {
+              $validator->errors()->add('end', 'Ending date need to be smaller than project ending date');
+          }
+
+        });
+
+        if ($validator->fails()) {
+          flash($validator->errors()->first())->error();
+          return redirect()->back()->withInput();
+        }
+
         $task = new Task;
         $task->name = $request->name;
         $task->description = $request->description;
@@ -113,7 +134,7 @@ class TaskController extends Controller
 
         if ($validator->fails()) {
           flash($validator->errors()->first())->error();
-          return redirect()->back();
+          return redirect()->back()->withInput();
         }
 
         $task->name = $request->name;

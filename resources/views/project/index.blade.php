@@ -14,11 +14,11 @@
                   <div class="form-group row">
                     <div class="col">
                       {!! Form::label('start', 'Starting date') !!}
-                      {{ Form::text('start', $project->start, ['class' => 'form-control', 'disabled']) }}
+                      {{ Form::text('start', $project->start->format('d-m-Y'), ['class' => 'form-control', 'disabled']) }}
                     </div>
                     <div class="col">
                       {!! Form::label('end', 'Ending date') !!}
-                      {{ Form::text('end', $project->end, ['class' => 'form-control', 'disabled']) }}
+                      {{ Form::text('end', $project->end->format('d-m-Y'), ['class' => 'form-control', 'disabled']) }}
                     </div>
                   </div>
                   {!! Form::open(['method' => 'get', 'url' => route('project.show', $project->id)]) !!}

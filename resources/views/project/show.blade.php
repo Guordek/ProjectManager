@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
           <h1>{{ $project->name }} | [{{ $project->status->name }}]</h1>
-          {{ $project->start }} to {{ $project->end }}
+          {{ $project->start->format('d-m-Y') }} to {{ $project->end->format('d-m-Y') }}
             @if($project->created_by == Auth::user()->id)
             <p>
               {!! Form::open(['method' => 'get', 'url' => route('project.edit', $project)]) !!}
@@ -55,8 +55,8 @@
                       <tr>
                       @endif
                         <th scope="row">{{ $task->name }}</th>
-                        <td>{{ $task->start }}</td>
-                        <td>{{ $task->end }}</td>
+                        <td>{{ $task->start->format('d-m-Y') }}</td>
+                        <td>{{ $task->end->format('d-m-Y') }}</td>
                         <td>{{ $task->level->name }}</td>
                         <td>{{ $task->status->name }}</td>
                         <td>{{ $task->user->name }}</td>
