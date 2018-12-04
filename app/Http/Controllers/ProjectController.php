@@ -69,7 +69,9 @@ class ProjectController extends Controller
         }
       }
 
-      $calendar = \Calendar::addEvents($events);
+      $calendar = \Calendar::addEvents($events)->setOptions([
+          'firstDay' => 1,
+      ]);
 
       return view('project.show', compact(['project', 'progress', 'date', 'calendar']));
     }
