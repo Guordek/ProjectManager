@@ -31,6 +31,7 @@
                 {!! $calendar->script() !!}
               </div>
               <div class="tab-pane fade" id="tasks">
+                <br>
                 <table class="table table-hover">
                   <thead>
                     <tr>
@@ -92,6 +93,7 @@
                 {!! Form::close() !!}
               </div>
               <div class="tab-pane fade" id="users">
+                <br>
                 <table class="table table-hover">
                   <thead>
                     <tr>

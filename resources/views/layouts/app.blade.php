@@ -11,7 +11,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <script src="{{ asset('js/jquery-ui.js') }}"></script>
     <script src="{{ asset('js/moment.min.js') }}"></script>
     <script src="{{ asset('js/fullcalendar.js') }}"></script>
 
