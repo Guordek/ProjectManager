@@ -59,7 +59,7 @@ class ProjectController extends Controller
             $value->user->name . ' - ' . $value->name . ' ['. $value->status->name .']',
             true,
             $value->start,
-            $value->end,
+            $value->end->addDays(1), // to display correctly in calendar
             $value->id,
             [
               'url' => route('task.show', $value->id),
