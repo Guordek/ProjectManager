@@ -61,7 +61,10 @@
 <script>
   $(function() {
     $(".datepicker").datepicker({
-      dateFormat: "yy-mm-dd"
+      dateFormat: "yy-mm-dd",
+      firstDay: 1,
+      minDate: new Date({{ $task->project->start->format('Y') }}, {{ $task->project->start->format('m') - 1 }}, {{ $task->project->start->format('d') }}),
+      maxDate: new Date({{ $task->project->end->format('Y') }}, {{ $task->project->end->format('m') - 1 }}, {{ $task->project->end->format('d') }})
     });
   });
   </script>
