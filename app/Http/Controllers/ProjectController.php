@@ -157,6 +157,15 @@ class ProjectController extends Controller
       }
     }
 
+    public function changeOwnerProject(Request $request, $id) {
+        $project = Auth::user()->projects->where('id', $id)->first();
+        $project->created_by = $request->user_id;
+        $project->save();
+
+        flash('The owner of the project is successfully changed')->success();
+        return redirect()->back();
+    }
+
     public function removeUserFromProject($id, $project) {
         $user = User::get()->where('id', $id)->first();
         $user->projects()->detach($project);
@@ -168,6 +177,7 @@ class ProjectController extends Controller
             }
         }
 
+        flash('User successfully removed from the project')->success();
         return redirect()->back();
     }
 

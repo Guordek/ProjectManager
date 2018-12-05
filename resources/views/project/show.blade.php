@@ -22,6 +22,9 @@
               <a class="nav-item nav-link active" href="#calendar" data-toggle="tab">Calendar</a>
               <a class="nav-item nav-link" href="#tasks" data-toggle="tab">Tasks</a>
               <a class="nav-item nav-link" href="#users" data-toggle="tab">Users</a>
+              @if($project->created_by == Auth::user()->id)
+                <a class="nav-item nav-link" href="#owner" data-toggle="tab">Owner</a>
+              @endif
             </nav>
 
             <div class="tab-content">
@@ -112,7 +115,7 @@
                       <th scope="row">{{ $user->name }}</th>
                       <td>{{ $user->email }}</td>
                       <td>
-                        @if($project->created_by == Auth::user()->id)
+                        @if($project->created_by == Auth::user()->id && $user->id != Auth::user()->id)
                           {!! Form::open(['method' => 'delete', 'url' => route('project.removeUserFromProject', [$user->id, $project->id]), 'onsubmit' => 'return confirmDelete()']) !!}
                             {!! Form::submit('Remove user', ['class' => 'btn btn-link']) !!}
                           {!! Form::close() !!}
@@ -130,6 +133,24 @@
                   {!! Form::submit('Add a user to the project', ['class' => 'btn btn-primary float-left']) !!}
                 {!! Form::close() !!}
               </div>
+              @if($project->created_by == Auth::user()->id)
+                <div class="tab-pane fade" id="owner">
+                    <br>
+                    {!! Form::open(['url' => route('project.changeOwnerProject', $project->id)]) !!}
+                    <div class="form-group">
+                        {!! Form::label('user_id', 'User') !!}
+                        <select class='form-control' id='user_id' name='user_id'>
+                            @foreach($project->users as $user)
+                                <option value="{!! $user->id !!}">{!! $user->name !!}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        {!! Form::submit('Change owner', ['class' => 'btn btn-primary']) !!}
+                    </div>
+                    {!! Form::close() !!}
+                </div>
+              @endif
             </div>
         </div>
     </div>
