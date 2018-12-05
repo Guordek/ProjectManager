@@ -24,6 +24,7 @@ class StoreTaskRequest extends FormRequest
     public function rules()
     {
         return [
+          'name'     => 'required|max:100',
           'start'    => 'required|date',
           'end'      => 'required|date|after_or_equal:start',
         ];
