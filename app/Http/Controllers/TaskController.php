@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Utils\Utils;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -94,7 +96,7 @@ class TaskController extends Controller
       $task = Task::findOrFail($id);
       $userInTask = $task->user;
       $usersInProject = $task->project->users;
-      $users = $this->check_diff_multi($usersInProject, $userInTask);
+      $users =  Utils::check_diff_multi($usersInProject, $userInTask);
       return view('task.link', compact(['task', 'users']));
     }
 
@@ -155,19 +157,5 @@ class TaskController extends Controller
 
         flash('Task successfully deleted')->success();
         return redirect(route('project.show', $task->project_id));
-    }
-
-    public function check_diff_multi($array1, $array2){
-      $result = array();
-      foreach($array1 as $key => $val) {
-           if(isset($array2[$key])){
-             if(is_array($val) && $array2[$key]){
-                 $result[$key] = check_diff_multi($val, $array2[$key]);
-             }
-         } else {
-             $result[$key] = $val;
-         }
-      }
-      return $result;
     }
 }

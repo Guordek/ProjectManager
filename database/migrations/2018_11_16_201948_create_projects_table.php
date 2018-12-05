@@ -19,6 +19,7 @@ class CreateProjectsTable extends Migration
             $table->longText('description');
             $table->date('start');
             $table->date('end');
+            $table->string('slug');
             $table->integer('created_by')->unsigned();
             $table->integer('category_id')->unsigned();
             $table->integer('status_id')->unsigned();

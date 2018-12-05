@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Utils\Utils;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,6 +19,7 @@ use App\Http\Requests\StoreProjectRequest;
 
 class ProjectController extends Controller
 {
+
     /**
      * Create a new controller instance.
      *
@@ -122,7 +125,8 @@ class ProjectController extends Controller
       $project = Auth::user()->projects->where('id', $id)->first();
       $usersInProject = $project->users;
       $allUsers = User::get();
-      $users = $this->check_diff_multi($allUsers, $usersInProject);
+      //$users = $this->check_diff_multi($allUsers, $usersInProject);
+      $users = Utils::check_diff_multi($allUsers, $usersInProject);
       return view('project.link', compact(['project', 'users']));
     }
 
@@ -159,19 +163,5 @@ class ProjectController extends Controller
       $project->delete();
       flash('Project successfully deleted')->success();
       return redirect(route('project.index'));
-    }
-
-    public function check_diff_multi($array1, $array2){
-      $result = array();
-      foreach($array1 as $key => $val) {
-           if(isset($array2[$key])){
-             if(is_array($val) && $array2[$key]){
-                 $result[$key] = check_diff_multi($val, $array2[$key]);
-             }
-         } else {
-             $result[$key] = $val;
-         }
-      }
-      return $result;
     }
 }

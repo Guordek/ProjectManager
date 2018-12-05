@@ -4,15 +4,20 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Cviebrock\EloquentSluggable\Sluggable;
+
 class Project extends Model
 {
+
+    use Sluggable;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'start', 'end', 'category_id', 'status_id',
+        'name', 'description', 'start', 'end', 'slug', 'category_id', 'status_id',
     ];
 
     protected $dates = [
@@ -21,6 +26,20 @@ class Project extends Model
         'start',
         'end',
     ];
+
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
+    }
 
     public function tasks() {
       return $this->hasMany('App\Task');
