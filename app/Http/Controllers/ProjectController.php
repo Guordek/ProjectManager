@@ -43,7 +43,7 @@ class ProjectController extends Controller
     }
 
     public function show($id) {
-      $project = Auth::user()->projects->where('id', $id)->first();
+      $project = Auth::user()->projects->where('slug', $id)->first();
       $tasks = $project->tasks;
       $date = date("Y-m-d");
       $statusClosed = Status::get()->where('name', 'Closed')->first();
@@ -65,7 +65,7 @@ class ProjectController extends Controller
             $value->end->addDays(1), // to display correctly in calendar
             $value->id,
             [
-              'url' => route('task.show', $value->id),
+              'url' => route('task.show', $value->slug),
               'color' => '#3490dc',
             ]
           );
@@ -101,14 +101,14 @@ class ProjectController extends Controller
     }
 
     public function edit($id) {
-      $project = Auth::user()->projects->where('id', $id)->first();
+      $project = Auth::user()->projects->where('slug', $id)->first();
       $categories = Category::get();
       $statuses = Status::get();
       return view('project.edit', compact(['project', 'categories', 'statuses']));
     }
 
     public function update(StoreProjectRequest $request, $id) {
-      $project = Auth::user()->projects->where('id', $id)->first();
+      $project = Auth::user()->projects->where('slug', $id)->first();
       $project->name = $request->name;
       $project->description = $request->description;
       $project->start = date("Y-m-d H:i:s", strtotime($request->start));
@@ -118,11 +118,11 @@ class ProjectController extends Controller
       $project->save();
 
       flash('Project successfully updated')->success();
-      return redirect(route('project.show', $project));
+      return redirect(route('project.show', $project->slug));
     }
 
     public function formLinkUserProject($id) {
-      $project = Auth::user()->projects->where('id', $id)->first();
+      $project = Auth::user()->projects->where('slug', $id)->first();
       $usersInProject = $project->users;
       $allUsers = User::get();
       //$users = $this->check_diff_multi($allUsers, $usersInProject);
@@ -147,7 +147,7 @@ class ProjectController extends Controller
           );
 
           flash('User successfully added to the project')->success();
-          return redirect(route('project.show', $project));
+          return redirect(route('project.show', $project->slug));
         } else {
           flash('User already exists in this project')->error();
           return redirect()->back();
@@ -158,8 +158,8 @@ class ProjectController extends Controller
       }
     }
 
-    public function destroy($project) {
-      $project = Auth::user()->projects->where('id', $project)->first();
+    public function destroy($id) {
+      $project = Auth::user()->projects->where('slug', $id)->first();
       $project->delete();
       flash('Project successfully deleted')->success();
       return redirect(route('project.index'));

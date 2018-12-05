@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <h1>Create a new project</h1>
-            {!! Form::open(['method' => 'put', 'url' => route('project.update', $project->id)]) !!}
+            {!! Form::open(['method' => 'put', 'url' => route('project.update', $project->slug)]) !!}
               <div class="form-group">
                 {!! Form::label('name', 'Name') !!}
                 {!! Form::text('name', $project->name, ['class' => 'form-control', 'required']) !!}

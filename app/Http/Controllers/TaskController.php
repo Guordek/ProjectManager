@@ -40,12 +40,12 @@ class TaskController extends Controller
     }
 
     public function show($id) {
-        $task = Task::findOrFail($id);
+        $task = Task::get()->where('slug', $id)->first();
         return view('task.show', compact('task'));
     }
 
     public function createTask($id) {
-        $project = Auth::user()->projects->where('id', $id)->first();
+        $project = Auth::user()->projects->where('slug', $id)->first();
         $levels = Level::get();
         return view('task.create', compact(['project', 'levels']));
     }
@@ -89,11 +89,11 @@ class TaskController extends Controller
         $task->save();
 
         flash('Task successfully registered')->success();
-        return redirect(route('project.show', $request->project_id));
+        return redirect(route('project.show', $project->slug));
     }
 
     public function link($id){
-      $task = Task::findOrFail($id);
+      $task = Task::get()->where('slug', $id)->first();
       $userInTask = $task->user;
       $usersInProject = $task->project->users;
       $users =  Utils::check_diff_multi($usersInProject, $userInTask);
@@ -106,11 +106,11 @@ class TaskController extends Controller
       $task->save();
 
       flash('User successfully assigned to the task')->success();
-      return redirect(route('project.show', $task->project->id));
+      return redirect(route('project.show', $task->project->slug));
     }
 
     public function edit($id) {
-        $task = Task::findOrFail($id);
+        $task = Task::get()->where('slug', $id)->first();
         $levels = Level::get();
         $statuses = Status::get();
         return view('task.edit', compact(['task', 'levels', 'statuses']));
@@ -148,7 +148,7 @@ class TaskController extends Controller
         $task->save();
 
         flash('Task successfully updated')->success();
-        return redirect(route('project.show', $task->project));
+        return redirect(route('project.show', $task->project->slug));
     }
 
     public function destroy($task) {
@@ -156,6 +156,6 @@ class TaskController extends Controller
         $task->delete();
 
         flash('Task successfully deleted')->success();
-        return redirect(route('project.show', $task->project_id));
+        return redirect(route('project.show', $task->project->slug));
     }
 }

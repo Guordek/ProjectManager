@@ -8,7 +8,7 @@
           {{ $project->start->format('d-m-Y') }} to {{ $project->end->format('d-m-Y') }}
             @if($project->created_by == Auth::user()->id)
             <p>
-              {!! Form::open(['method' => 'get', 'url' => route('project.edit', $project)]) !!}
+              {!! Form::open(['method' => 'get', 'url' => route('project.edit', $project->slug)]) !!}
                 {!! Form::submit('Edit the project', ['class' => 'btn btn-primary']) !!}
               {!! Form::close() !!}
             </p>
@@ -62,16 +62,16 @@
                         <td>{{ $task->status->name }}</td>
                         <td>{{ $task->user->name }}</td>
                         <td class="column-verticallineMiddle form-inline">
-                          {!! Form::open(['method' => 'get', 'url' => route('task.show', $task)]) !!}
+                          {!! Form::open(['method' => 'get', 'url' => route('task.show', $task->slug)]) !!}
                             {!! Form::submit('Show', ['class' => 'btn btn-link']) !!}
                           {!! Form::close() !!}
 
                           @if($task->user_id == Auth::user()->id || $project->created_by == Auth::user()->id)
-                            {!! Form::open(['method' => 'get', 'url' => route('task.edit', $task)]) !!}
+                            {!! Form::open(['method' => 'get', 'url' => route('task.edit', $task->slug)]) !!}
                               {!! Form::submit('Edit', ['class' => 'btn btn-link']) !!}
                             {!! Form::close() !!}
 
-                            {!! Form::open(['method' => 'get', 'url' => route('task.link', $task)]) !!}
+                            {!! Form::open(['method' => 'get', 'url' => route('task.link', $task->slug)]) !!}
                               {!! Form::submit('Assign', ['class' => 'btn btn-link']) !!}
                             {!! Form::close() !!}
 
@@ -88,7 +88,7 @@
                     @endforelse
                   </tbody>
                 </table>
-                {!! Form::open(['method' => 'get', 'url' => route('task.createTask', $project->id)]) !!}
+                {!! Form::open(['method' => 'get', 'url' => route('task.createTask', $project->slug)]) !!}
                   {!! Form::submit('Add a new task', ['class' => 'btn btn-primary float-left']) !!}
                 {!! Form::close() !!}
               </div>
@@ -116,7 +116,7 @@
                     @endforelse
                   </tbody>
                 </table>
-                {!! Form::open(['method' => 'get', 'url' => route('project.formLinkUserProject', $project->id)]) !!}
+                {!! Form::open(['method' => 'get', 'url' => route('project.formLinkUserProject', $project->slug)]) !!}
                   {!! Form::submit('Add a user to the project', ['class' => 'btn btn-primary float-left']) !!}
                 {!! Form::close() !!}
               </div>

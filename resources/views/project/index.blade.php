@@ -21,12 +21,12 @@
                       {{ Form::text('end', $project->end->format('d-m-Y'), ['class' => 'form-control', 'disabled']) }}
                     </div>
                   </div>
-                  {!! Form::open(['method' => 'get', 'url' => route('project.show', $project->id)]) !!}
+                  {!! Form::open(['method' => 'get', 'url' => route('project.show', $project->slug)]) !!}
                     {!! Form::submit('Show', ['class' => 'btn btn-primary float-left']) !!}
                   {!! Form::close() !!}
 
                   @if($project->created_by == Auth::user()->id)
-                    {!! Form::open(['method' => 'delete', 'url' => route('project.destroy', $project), 'onsubmit' => 'return confirmDelete()']) !!}
+                    {!! Form::open(['method' => 'delete', 'url' => route('project.destroy', $project->slug), 'onsubmit' => 'return confirmDelete()']) !!}
                       {!! Form::submit('Delete', ['class' => 'btn btn-danger float-right']) !!}
                     {!! Form::close() !!}
                   @endif
