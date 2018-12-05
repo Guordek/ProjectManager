@@ -125,7 +125,6 @@ class ProjectController extends Controller
       $project = Auth::user()->projects->where('slug', $id)->first();
       $usersInProject = $project->users;
       $allUsers = User::get();
-      //$users = $this->check_diff_multi($allUsers, $usersInProject);
       $users = Utils::check_diff_multi($allUsers, $usersInProject);
       return view('project.link', compact(['project', 'users']));
     }
@@ -156,6 +155,13 @@ class ProjectController extends Controller
         flash('You need to select a user')->error();
         return redirect()->back();
       }
+    }
+
+    public function removeUserFromProject($id, $project) {
+        $user = User::get()->where('id', $id)->first();
+        $user->projects()->detach($project);
+
+        return redirect()->back();
     }
 
     public function destroy($id) {

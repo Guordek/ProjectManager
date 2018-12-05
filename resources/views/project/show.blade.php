@@ -107,7 +107,13 @@
                     <tr>
                       <th scope="row">{{ $user->name }}</th>
                       <td>{{ $user->email }}</td>
-                      <td></td>
+                      <td>
+                        @if($project->created_by == Auth::user()->id)
+                          {!! Form::open(['method' => 'delete', 'url' => route('project.removeUserFromProject', [$user->id, $project->id]), 'onsubmit' => 'return confirmDelete()']) !!}
+                            {!! Form::submit('Remove user', ['class' => 'btn btn-link']) !!}
+                          {!! Form::close() !!}
+                        @endif
+                      </td>
                     </tr>
                     @empty
                     <tr>
