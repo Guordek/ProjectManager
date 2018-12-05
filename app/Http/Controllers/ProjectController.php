@@ -59,7 +59,7 @@ class ProjectController extends Controller
       if(!empty($tasks)) {
         foreach ($tasks as $value) {
           $events[] = \Calendar::event(
-            $value->user->name . ' - ' . $value->name . ' ['. $value->status->name .']',
+            ($value->user_id != null ? $value->user->name : 'Unassigned') . ' - ' . $value->name . ' ['. $value->status->name .']',
             true,
             $value->start,
             $value->end->addDays(1), // to display correctly in calendar
@@ -160,6 +160,13 @@ class ProjectController extends Controller
     public function removeUserFromProject($id, $project) {
         $user = User::get()->where('id', $id)->first();
         $user->projects()->detach($project);
+        $project = Auth::user()->projects->where('id', $project)->first();
+        foreach ($project->tasks as $task) {
+            if($task->user_id == $id) {
+                $task->user_id = null;
+                $task->save();
+            }
+        }
 
         return redirect()->back();
     }

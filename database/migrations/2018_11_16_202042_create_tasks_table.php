@@ -21,7 +21,7 @@ class CreateTasksTable extends Migration
           $table->date('end');
           $table->string('slug');
           $table->integer('project_id')->unsigned();
-          $table->integer('user_id')->unsigned();
+          $table->integer('user_id')->unsigned()->nullable();
           $table->integer('level_id')->unsigned();
           $table->integer('status_id')->unsigned();
           $table->timestamps();

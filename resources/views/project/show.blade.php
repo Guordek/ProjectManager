@@ -60,7 +60,11 @@
                         <td>{{ $task->end->format('d-m-Y') }}</td>
                         <td>{{ $task->level->name }}</td>
                         <td>{{ $task->status->name }}</td>
-                        <td>{{ $task->user->name }}</td>
+                        @if($task->user_id == null)
+                          <td>Unassigned</td>
+                        @else
+                          <td>{{ $task->user->name }}</td>
+                        @endif
                         <td class="column-verticallineMiddle form-inline">
                           {!! Form::open(['method' => 'get', 'url' => route('task.show', $task->slug)]) !!}
                             {!! Form::submit('Show', ['class' => 'btn btn-link']) !!}
