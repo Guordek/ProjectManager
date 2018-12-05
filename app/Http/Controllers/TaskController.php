@@ -53,14 +53,14 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request) {
         $project = Project::findOrFail($request->project_id);
         $dateTaskStart = date("Y-m-d H:i:s", strtotime($request->start));
-        $datetaskEnd = date("Y-m-d H:i:s", strtotime($request->end));
+        $dateTaskEnd = date("Y-m-d H:i:s", strtotime($request->end));
         $levels = Level::get();
 
         $validator = Validator::make($request->all(), []);
 
         $validator->after(function ($validator) use($request, $project) {
           $start = Carbon::createFromFormat('d-m-Y', $request->start);
-          $end = Carbon::createFromFormat('d-m-Y', $request->end);
+          $end = Carbon::createFromFormat('d-m-Y', $request->end)->subDay();
 
           if ($start->lt($project->start)) {
               $validator->errors()->add('start', 'Starting date need to be greater than project starting date');
@@ -81,7 +81,7 @@ class TaskController extends Controller
         $task->name = $request->name;
         $task->description = $request->description;
         $task->start = $dateTaskStart;
-        $task->end = $datetaskEnd;
+        $task->end = $dateTaskEnd;
         $task->project_id = $request->project_id;
         $task->user_id = Auth::user()->id;
         $task->level_id = $request->level_id;
@@ -122,7 +122,7 @@ class TaskController extends Controller
 
         $validator->after(function ($validator) use($request, $task) {
           $start = Carbon::createFromFormat('Y-m-d', $request->start);
-          $end = Carbon::createFromFormat('Y-m-d', $request->end);
+          $end = Carbon::createFromFormat('Y-m-d', $request->end)->subDay();
 
           if ($start->lt($task->project->start)) {
               $validator->errors()->add('start', 'Starting date need to be greater than project starting date');

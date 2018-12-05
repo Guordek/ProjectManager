@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Comment;
+use App\Task;
 
 class CommentController extends Controller
 {
@@ -26,11 +27,12 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
+      $task = Task::get()->where('id', $request->task_id)->first();
       $comment = new Comment;
       $comment->comment = $request->comment;
       $comment->task_id = $request->task_id;
       $comment->user_id = $user = Auth::user()->id;
       $comment->save();
-      return redirect(route('task.show', $request->task_id));
+      return redirect(route('task.show', $task->slug));
     }
 }
