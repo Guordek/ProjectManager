@@ -14,7 +14,16 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                        <p>
+                            You are logged in!
+                        </p>
+                        <p>
+                            <a href="{{ route('project.create') }}">Create a new project</a>
+                        </p>
+
+                        <p>
+                            <a href="{{ route('project.index') }}">Your projects</a>
+                        </p>
                 </div>
             </div>
         </div>

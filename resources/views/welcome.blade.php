@@ -85,8 +85,8 @@
                 </div>
 
                 <div class="links">
-                    <a href="/project/create">Create a new project</a>
-                    <a href="/project">Your projects</a>
+                    <a href="{{ route('project.create') }}">Create a new project</a>
+                    <a href="{{ route('project.index') }}">Your projects</a>
                 </div>
             </div>
         </div>

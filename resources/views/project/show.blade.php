@@ -136,6 +136,9 @@
               @if($project->created_by == Auth::user()->id)
                 <div class="tab-pane fade" id="owner">
                     <br>
+
+                    <h3>Change the owner of the project</h3>
+
                     {!! Form::open(['url' => route('project.changeOwnerProject', $project->id)]) !!}
                     <div class="form-group">
                         {!! Form::label('user_id', 'User') !!}
