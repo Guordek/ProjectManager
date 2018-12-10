@@ -117,7 +117,7 @@ class TaskController extends Controller
     }
 
     public function update(StoreTaskRequest $request, $id) {
-        $task = Task::findOrFail($id)->first();
+        $task = Task::get()->where('slug', $id)->first();
         $validator = Validator::make($request->all(), []);
 
         $validator->after(function ($validator) use($request, $task) {

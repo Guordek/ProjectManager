@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
           <h1>{{ $task->name }}</h1>
-          {!! Form::open(['method' => 'put', 'url' => route('task.update', $task->id)]) !!}
+          {!! Form::open(['method' => 'put', 'url' => route('task.update', $task->slug)]) !!}
             <div class="form-group">
               {!! Form::label('name', 'Name') !!}
               {!! Form::text('name', $task->name, ['class' => 'form-control', 'required']) !!}

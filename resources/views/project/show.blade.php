@@ -30,6 +30,15 @@
             <div class="tab-content">
               <div class="tab-pane fade show active" id="calendar">
                 <br>
+                  <fieldset>
+                      <legend>Priority</legend>
+                      @forelse($project->tasks as $task)
+                          <span style="color: {!! $task->level->color !!}">{{  $task->level->name }}</span>
+                      @empty
+                          <span>No task recorded</span>
+                      @endforelse
+                      <hr>
+                  </fieldset>
                 {!! $calendar->calendar() !!}
                 {!! $calendar->script() !!}
               </div>

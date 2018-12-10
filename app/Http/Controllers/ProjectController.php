@@ -58,17 +58,17 @@ class ProjectController extends Controller
 
       if(!empty($tasks)) {
         foreach ($tasks as $value) {
-          $events[] = \Calendar::event(
-            ($value->user_id != null ? $value->user->name : 'Unassigned') . ' - ' . $value->name . ' ['. $value->status->name .']',
-            true,
-            $value->start,
-            $value->end->addDays(1), // to display correctly in calendar
-            $value->id,
-            [
-              'url' => route('task.show', $value->slug),
-              'color' => '#3490dc',
-            ]
-          );
+            $events[] = \Calendar::event(
+                ($value->user_id != null ? $value->user->name : 'Unassigned') . ' - ' . $value->name . ' ['. $value->status->name .']',
+                true,
+                $value->start,
+                $value->end->addDays(1), // to display correctly in calendar
+                $value->id,
+                [
+                    'url' => route('task.show', $value->slug),
+                    'color' => ($value->level->color != null) ? $value->level->color : "#1db5ff",
+                ]
+            );
         }
       }
 
