@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UploadProjectFilesRequest;
 use App\Http\Utils\Utils;
-use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,9 +13,10 @@ use App\Project;
 use App\Category;
 use App\Status;
 use App\User;
-use App\Event;
+use App\ProjectFile;
 
 use App\Http\Requests\StoreProjectRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -37,127 +38,135 @@ class ProjectController extends Controller
      */
     public function index()
     {
-      $user = Auth::user();
-      $projects = $user->projects->sortBy('end');
-      return view('project.index', compact('projects'));
+        $user = Auth::user();
+        $projects = $user->projects->sortBy('end');
+        return view('project.index', compact('projects'));
     }
 
-    public function show($id) {
-      $project = Auth::user()->projects->where('slug', $id)->first();
-      $tasks = $project->tasks;
-      $date = date("Y-m-d");
-      $statusClosed = Status::get()->where('name', 'Closed')->first();
-      $nbrTaskComplete = $project->tasks->where('status_id', $statusClosed->id)->count();
-      if($nbrTaskComplete != 0) {
-        $progress = round($nbrTaskComplete / $project->tasks->count() * 100, 2);
-      } else {
-        $progress = 0;
-      }
-
-      $events = [];
-
-      if(!empty($tasks)) {
-        foreach ($tasks as $value) {
-            $events[] = \Calendar::event(
-                ($value->user_id != null ? $value->user->name : 'Unassigned') . ' - ' . $value->name . ' ['. $value->status->name .']',
-                true,
-                $value->start,
-                $value->end->addDays(1), // to display correctly in calendar
-                $value->id,
-                [
-                    'url' => route('task.show', $value->slug),
-                    'color' => ($value->level->color != null) ? $value->level->color : "#1db5ff",
-                ]
-            );
+    public function show($id)
+    {
+        $project = Auth::user()->projects->where('slug', $id)->first();
+        $tasks = $project->tasks;
+        $date = date("Y-m-d");
+        $statusClosed = Status::get()->where('name', 'Closed')->first();
+        $nbrTaskComplete = $project->tasks->where('status_id', $statusClosed->id)->count();
+        if ($nbrTaskComplete != 0) {
+            $progress = round($nbrTaskComplete / $project->tasks->count() * 100, 2);
+        } else {
+            $progress = 0;
         }
-      }
 
-      $calendar = \Calendar::addEvents($events)->setOptions([
-          'firstDay' => 1,
-      ]);
+        $events = [];
 
-      return view('project.show', compact(['project', 'progress', 'date', 'calendar']));
+        if (!empty($tasks)) {
+            foreach ($tasks as $value) {
+                $events[] = \Calendar::event(
+                    ($value->user_id != null ? $value->user->name : 'Unassigned') . ' - ' . $value->name . ' [' . $value->status->name . ']',
+                    true,
+                    $value->start,
+                    $value->end->addDays(1), // to display correctly in calendar
+                    $value->id,
+                    [
+                        'url' => route('task.show', $value->slug),
+                        'color' => ($value->level->color != null) ? $value->level->color : "#1db5ff",
+                    ]
+                );
+            }
+        }
+
+        $calendar = \Calendar::addEvents($events)->setOptions([
+            'firstDay' => 1,
+        ]);
+
+        return view('project.show', compact(['project', 'progress', 'date', 'calendar']));
     }
 
-    public function create() {
-      $categories = Category::get();
-      return view('project.create', compact(['categories']));
+    public function create()
+    {
+        $categories = Category::get();
+        return view('project.create', compact(['categories']));
     }
 
-    public function store(StoreProjectRequest $request) {
-      $user = Auth::user()->id;
-      $project = new Project;
-      $project->name = $request->name;
-      $project->description = $request->description;
-      $project->start = date("Y-m-d H:i:s", strtotime($request->start));
-      $project->end = date("Y-m-d H:i:s", strtotime($request->end));
-      $project->category_id = $request->category_id;
-      $project->status_id = 1;
-      $project->created_by = $user;
-      $project->save();
-      $project->users()->sync($user);
-      flash('Project successfully stored')->success();
-      return redirect(route('project.index'));
+    public function store(StoreProjectRequest $request)
+    {
+        $user = Auth::user()->id;
+        $project = new Project;
+        $project->name = $request->name;
+        $project->description = $request->description;
+        $project->start = date("Y-m-d H:i:s", strtotime($request->start));
+        $project->end = date("Y-m-d H:i:s", strtotime($request->end));
+        $project->category_id = $request->category_id;
+        $project->status_id = 1;
+        $project->created_by = $user;
+        $project->save();
+        $project->users()->sync($user);
+        flash('Project successfully stored')->success();
+        return redirect(route('project.index'));
     }
 
-    public function edit($id) {
-      $project = Auth::user()->projects->where('slug', $id)->first();
-      $categories = Category::get();
-      $statuses = Status::get();
-      return view('project.edit', compact(['project', 'categories', 'statuses']));
+    public function edit($id)
+    {
+        $project = Auth::user()->projects->where('slug', $id)->first();
+        $categories = Category::get();
+        $statuses = Status::get();
+        return view('project.edit', compact(['project', 'categories', 'statuses']));
     }
 
-    public function update(StoreProjectRequest $request, $id) {
-      $project = Auth::user()->projects->where('slug', $id)->first();
-      $project->name = $request->name;
-      $project->description = $request->description;
-      $project->start = date("Y-m-d H:i:s", strtotime($request->start));
-      $project->end = date("Y-m-d H:i:s", strtotime($request->end));
-      $project->category_id = $request->category_id;
-      $project->status_id = $request->status_id;
-      $project->save();
+    public function update(StoreProjectRequest $request, $id)
+    {
+        $project = Auth::user()->projects->where('slug', $id)->first();
+        $project->name = $request->name;
+        $project->description = $request->description;
+        $project->start = date("Y-m-d H:i:s", strtotime($request->start));
+        $project->end = date("Y-m-d H:i:s", strtotime($request->end));
+        $project->category_id = $request->category_id;
+        $project->status_id = $request->status_id;
+        $project->save();
 
-      flash('Project successfully updated')->success();
-      return redirect(route('project.show', $project->slug));
+        flash('Project successfully updated')->success();
+        return redirect(route('project.show', $project->slug));
     }
 
-    public function formLinkUserProject($id) {
-      $project = Auth::user()->projects->where('slug', $id)->first();
-      $usersInProject = $project->users;
-      $allUsers = User::get();
-      $users = Utils::check_diff_multi($allUsers, $usersInProject);
-      return view('project.link', compact(['project', 'users']));
+    public function formLinkUserProject($id)
+    {
+        $project = Auth::user()->projects->where('slug', $id)->first();
+        $usersInProject = $project->users;
+        $allUsers = User::get();
+        $users = Utils::check_diff_multi($allUsers, $usersInProject);
+        return view('project.link', compact(['project', 'users']));
     }
 
-    public function linkUserProject(Request $request) {
-      if($request->user_id != null) {
-        $project = Auth::user()->projects->where('id', $request->project_id)->first();
-        $user = User::get()->where('id', $request->user_id)->first();
-        $query = DB::table('project_user')
+    public function linkUserProject(Request $request)
+    {
+        if ($request->user_id != null) {
+            $project = Auth::user()->projects->where('id', $request->project_id)->first();
+            $user = User::get()->where('id', $request->user_id)->first();
+            $query = DB::table('project_user')
                 ->select('project_id', 'user_id')
                 ->where([
-                  ['project_id', $project->id],
-                  ['user_id', $user->id],
+                    ['project_id', $project->id],
+                    ['user_id', $user->id],
                 ])->get();
 
-        if($query->isEmpty()) {
-          DB::table('project_user')->insert(
-            ['project_id' => $project->id, 'user_id' => $user->id]
-          );
+            if ($query->isEmpty()) {
+                DB::table('project_user')->insert(
+                    ['project_id' => $project->id, 'user_id' => $user->id]
+                );
 
-          flash('User successfully added to the project')->success();
-          return redirect(route('project.show', $project->slug));
+                flash('User successfully added to the project')->success();
+                return redirect(route('project.show', $project->slug));
+            } else {
+                flash('User already exists in this project')->error();
+                return redirect()->back();
+            }
         } else {
-          flash('User already exists in this project')->error();
-          return redirect()->back();
+            flash('You need to select a user')->error();
+            return redirect()->back();
         }
-      } else {
-        flash('You need to select a user')->error();
-        return redirect()->back();
-      }
     }
 
-    public function changeOwnerProject(Request $request, $id) {
+    public function changeOwnerProject(Request $request, $id)
+    {
         $project = Auth::user()->projects->where('id', $id)->first();
         $project->created_by = $request->user_id;
         $project->save();
@@ -166,12 +175,13 @@ class ProjectController extends Controller
         return redirect()->back();
     }
 
-    public function removeUserFromProject($id, $project) {
+    public function removeUserFromProject($id, $project)
+    {
         $user = User::get()->where('id', $id)->first();
         $user->projects()->detach($project);
         $project = Auth::user()->projects->where('id', $project)->first();
         foreach ($project->tasks as $task) {
-            if($task->user_id == $id) {
+            if ($task->user_id == $id) {
                 $task->user_id = null;
                 $task->save();
             }
@@ -181,10 +191,37 @@ class ProjectController extends Controller
         return redirect()->back();
     }
 
-    public function destroy($id) {
-      $project = Auth::user()->projects->where('slug', $id)->first();
-      $project->delete();
-      flash('Project successfully deleted')->success();
-      return redirect(route('project.index'));
+    public function addFileForm($id)
+    {
+        $project = Auth::user()->projects->where('slug', $id)->first();
+        return view('project.file', compact(['project']));
+    }
+
+    public function addFile(UploadProjectFilesRequest $request, $id)
+    {
+        $project = Auth::user()->projects->where('id', $id)->first();
+        $user = Auth::user();
+
+        foreach ($request->files as $f) {
+            foreach ($f as $file) {
+                // TODO: FAIRE MARCHER CETTE MERDE
+                $filename = Storage::putFile('files', $request->file($f));
+                $file = new ProjectFile;
+                $file->filename = $filename;
+                $file->user()->associate($user);
+                $file->project()->associate($project);
+                $file->save();
+            }
+        }
+
+        return redirect(route('project.index'));
+    }
+
+    public function destroy($id)
+    {
+        $project = Auth::user()->projects->where('slug', $id)->first();
+        $project->delete();
+        flash('Project successfully deleted')->success();
+        return redirect(route('project.index'));
     }
 }

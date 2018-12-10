@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Comment extends Model
+class ProjectFile extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,12 +12,12 @@ class Comment extends Model
      * @var array
      */
     protected $fillable = [
-        'comment', 'task_id', 'user_id'
+        'filename', 'project_id', 'user_id'
     ];
 
-    public function task()
+    public function project()
     {
-        return $this->belongsTo('App\Task');
+        return $this->belongsTo('App\Project');
     }
 
     public function user()

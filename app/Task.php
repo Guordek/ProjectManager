@@ -40,23 +40,28 @@ class Task extends Model
         ];
     }
 
-    public function project() {
-      return $this->belongsTo('App\Project');
+    public function project()
+    {
+        return $this->belongsTo('App\Project');
     }
 
-    public function level() {
-      return $this->belongsTo('App\Level');
+    public function level()
+    {
+        return $this->belongsTo('App\Level');
     }
 
-    public function status() {
-      return $this->belongsTo('App\Status');
+    public function status()
+    {
+        return $this->belongsTo('App\Status');
     }
 
-    public function user() {
-      return $this->belongsTo('App\User');
+    public function user()
+    {
+        return $this->belongsTo('App\User');
     }
 
-    public function comments() {
-      return $this->hasMany('App\Comment');
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
     }
 }

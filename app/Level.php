@@ -15,7 +15,8 @@ class Level extends Model
         'name', 'color',
     ];
 
-    public function tasks() {
-      return $this->hasMany('App\Task');
+    public function tasks()
+    {
+        return $this->hasMany('App\Task');
     }
 }

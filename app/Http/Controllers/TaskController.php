@@ -39,18 +39,21 @@ class TaskController extends Controller
 
     }
 
-    public function show($id) {
+    public function show($id)
+    {
         $task = Task::get()->where('slug', $id)->first();
         return view('task.show', compact('task'));
     }
 
-    public function createTask($id) {
+    public function createTask($id)
+    {
         $project = Auth::user()->projects->where('slug', $id)->first();
         $levels = Level::get();
         return view('task.create', compact(['project', 'levels']));
     }
 
-    public function store(StoreTaskRequest $request) {
+    public function store(StoreTaskRequest $request)
+    {
         $project = Project::findOrFail($request->project_id);
         $dateTaskStart = date("Y-m-d H:i:s", strtotime($request->start));
         $dateTaskEnd = date("Y-m-d H:i:s", strtotime($request->end));
@@ -58,23 +61,23 @@ class TaskController extends Controller
 
         $validator = Validator::make($request->all(), []);
 
-        $validator->after(function ($validator) use($request, $project) {
-          $start = Carbon::createFromFormat('d-m-Y', $request->start);
-          $end = Carbon::createFromFormat('d-m-Y', $request->end)->subDay();
+        $validator->after(function ($validator) use ($request, $project) {
+            $start = Carbon::createFromFormat('d-m-Y', $request->start);
+            $end = Carbon::createFromFormat('d-m-Y', $request->end)->subDay();
 
-          if ($start->lt($project->start)) {
-              $validator->errors()->add('start', 'Starting date need to be greater than project starting date');
-          }
+            if ($start->lt($project->start)) {
+                $validator->errors()->add('start', 'Starting date need to be greater than project starting date');
+            }
 
-          if ($end->gt($project->end)) {
-              $validator->errors()->add('end', 'Ending date need to be smaller than project ending date');
-          }
+            if ($end->gt($project->end)) {
+                $validator->errors()->add('end', 'Ending date need to be smaller than project ending date');
+            }
 
         });
 
         if ($validator->fails()) {
-          flash($validator->errors()->first())->error();
-          return redirect()->back()->withInput();
+            flash($validator->errors()->first())->error();
+            return redirect()->back()->withInput();
         }
 
         $task = new Task;
@@ -92,51 +95,55 @@ class TaskController extends Controller
         return redirect(route('project.show', $project->slug));
     }
 
-    public function link($id){
-      $task = Task::get()->where('slug', $id)->first();
-      $userInTask = $task->user;
-      $usersInProject = $task->project->users;
-      $users =  Utils::check_diff_multi($usersInProject, $userInTask);
-      return view('task.link', compact(['task', 'users']));
+    public function link($id)
+    {
+        $task = Task::get()->where('slug', $id)->first();
+        $userInTask = $task->user;
+        $usersInProject = $task->project->users;
+        $users = Utils::check_diff_multi($usersInProject, $userInTask);
+        return view('task.link', compact(['task', 'users']));
     }
 
-    public function linkUserTask(Request $request, $task) {
-      $task = Task::findOrFail($task);
-      $task->user_id = $request->user_id;
-      $task->save();
+    public function linkUserTask(Request $request, $task)
+    {
+        $task = Task::findOrFail($task);
+        $task->user_id = $request->user_id;
+        $task->save();
 
-      flash('User successfully assigned to the task')->success();
-      return redirect(route('project.show', $task->project->slug));
+        flash('User successfully assigned to the task')->success();
+        return redirect(route('project.show', $task->project->slug));
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         $task = Task::get()->where('slug', $id)->first();
         $levels = Level::get();
         $statuses = Status::get();
         return view('task.edit', compact(['task', 'levels', 'statuses']));
     }
 
-    public function update(StoreTaskRequest $request, $id) {
+    public function update(StoreTaskRequest $request, $id)
+    {
         $task = Task::get()->where('slug', $id)->first();
         $validator = Validator::make($request->all(), []);
 
-        $validator->after(function ($validator) use($request, $task) {
-          $start = Carbon::createFromFormat('Y-m-d', $request->start);
-          $end = Carbon::createFromFormat('Y-m-d', $request->end)->subDay();
+        $validator->after(function ($validator) use ($request, $task) {
+            $start = Carbon::createFromFormat('Y-m-d', $request->start);
+            $end = Carbon::createFromFormat('Y-m-d', $request->end)->subDay();
 
-          if ($start->lt($task->project->start)) {
-              $validator->errors()->add('start', 'Starting date need to be greater than project starting date');
-          }
+            if ($start->lt($task->project->start)) {
+                $validator->errors()->add('start', 'Starting date need to be greater than project starting date');
+            }
 
-          if ($end->gt($task->project->end)) {
-              $validator->errors()->add('end', 'Ending date need to be smaller than project ending date');
-          }
+            if ($end->gt($task->project->end)) {
+                $validator->errors()->add('end', 'Ending date need to be smaller than project ending date');
+            }
 
         });
 
         if ($validator->fails()) {
-          flash($validator->errors()->first())->error();
-          return redirect()->back()->withInput();
+            flash($validator->errors()->first())->error();
+            return redirect()->back()->withInput();
         }
 
         $task->name = $request->name;
@@ -151,7 +158,8 @@ class TaskController extends Controller
         return redirect(route('project.show', $task->project->slug));
     }
 
-    public function destroy($task) {
+    public function destroy($task)
+    {
         $task = Task::findOrFail($task);
         $task->delete();
 

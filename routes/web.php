@@ -28,6 +28,8 @@ Route::post('/project/{id}/task/link', 'TaskController@linkUserTask')->name('tas
 Route::get('/project/{id}/user/link', 'ProjectController@formLinkUserProject')->name('project.formLinkUserProject');
 Route::post('/project/{id}/user/link', 'ProjectController@linkUserProject')->name('project.linkUserProject');
 Route::post('/project/{id}/user/owner', 'ProjectController@changeOwnerProject')->name('project.changeOwnerProject');
+Route::get('/project/{id}/file', 'ProjectController@addFileForm')->name('project.addFileForm');
+Route::post('/project/{id}/file/add', 'ProjectController@addFile')->name('project.addFile');
 Route::delete('/project/{project}/user/{id}/delete', 'ProjectController@removeUserFromProject')->name('project.removeUserFromProject');
 
 Route::group(['prefix' => 'admin'], function () {

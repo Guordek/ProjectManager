@@ -41,19 +41,28 @@ class Project extends Model
         ];
     }
 
-    public function tasks() {
-      return $this->hasMany('App\Task');
+    public function tasks()
+    {
+        return $this->hasMany('App\Task');
     }
 
-    public function status() {
-      return $this->belongsTo('App\Status');
+    public function status()
+    {
+        return $this->belongsTo('App\Status');
     }
 
-    public function category() {
-      return $this->belongsTo('App\Category');
+    public function category()
+    {
+        return $this->belongsTo('App\Category');
     }
 
-    public function users() {
-      return $this->belongsToMany('App\User', 'project_user', 'project_id', 'user_id');
+    public function files()
+    {
+        return $this->hasMany('App\ProjectFile');
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany('App\User', 'project_user', 'project_id', 'user_id');
     }
 }

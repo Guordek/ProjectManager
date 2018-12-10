@@ -28,16 +28,24 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function projects() {
-      return $this->belongsToMany('App\Project', 'project_user', 'user_id', 'project_id');
+    public function projects()
+    {
+        return $this->belongsToMany('App\Project', 'project_user', 'user_id', 'project_id');
     }
 
-    public function tasks() {
-      return $this->hasMany('App\Task');
+    public function tasks()
+    {
+        return $this->hasMany('App\Task');
     }
 
-    public function comments() {
-      return $this->hasMany('App\Comment');
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
     }
-    
+
+    public function files()
+    {
+        return $this->hasMany('App\ProjectFile');
+    }
+
 }
