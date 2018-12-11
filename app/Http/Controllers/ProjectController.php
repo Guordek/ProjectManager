@@ -16,6 +16,7 @@ use App\User;
 use App\ProjectFile;
 
 use App\Http\Requests\StoreProjectRequest;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
@@ -204,16 +205,22 @@ class ProjectController extends Controller
 
         foreach ($request->files as $file) {
             foreach ($file as $index => $f) {
-                $filename = $request->file('files')[$index]->store('public/files');
+                $path = $request->file('files')[$index]->store('public/files');
+                $filename = $request->file('files')[$index]->getClientOriginalName();
                 $f = new ProjectFile;
+                $f->path = str_replace("public/", "", $path);
                 $f->filename = $filename;
-                $f->user_id = Auth::user()->id;
+                $f->user_id = $user->id;
                 $f->project_id = $project->id;
                 $f->save();
             }
         }
 
-        return redirect(route('project.index'));
+        return redirect(route('project.show', $project->slug));
+    }
+
+    public function dlFile($id, $path) {
+        return response()->download(asset('storage/'. $path));
     }
 
     public function destroy($id)

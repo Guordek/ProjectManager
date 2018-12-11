@@ -12,7 +12,7 @@ class ProjectFile extends Model
      * @var array
      */
     protected $fillable = [
-        'filename', 'project_id', 'user_id'
+        'filename', 'path', 'project_id', 'user_id'
     ];
 
     public function project()

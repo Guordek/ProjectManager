@@ -162,12 +162,18 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <th scope="row">Filename</th>
-                                    <td>Uploaded by</td>
-                                    <td>Uploaded at</td>
-                                    <td>Uploaded Actions</td>
-                                </tr>
+                                @forelse($project->files as $file)
+                                    <tr>
+                                        <th scope="row">{{  $file->filename }}</th>
+                                        <td>{{ $file->user->name }}</td>
+                                        <td>{{ $file->created_at }}</td>
+                                        <td>
+                                            <a href="{{ asset('storage/'.$file->path )}}">Download</a>
+                                        </td>
+                                    </tr>
+                                @empty
+
+                                @endforelse
                                 </tbody>
                             </table>
                         </div>
