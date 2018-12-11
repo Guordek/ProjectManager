@@ -26,6 +26,7 @@ Composer
 > composer update
 > php artisan migrate:fresh --seed
 > php artisan key:generate
+> php artisan storage:link
 ```
 
 ## Built With
