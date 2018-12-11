@@ -168,11 +168,13 @@
                                         <td>{{ $file->user->name }}</td>
                                         <td>{{ $file->created_at }}</td>
                                         <td>
-                                            <a href="{{ asset('storage/'.$file->path )}}">Download</a>
+                                            <a href="{{ asset('storage/'.$file->path )}}" target="_blank">Download</a>
                                         </td>
                                     </tr>
                                 @empty
-
+                                    <tr>
+                                        <td colspan="4">No file uploaded</td>
+                                    </tr>
                                 @endforelse
                                 </tbody>
                             </table>
