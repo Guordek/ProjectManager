@@ -148,9 +148,6 @@
                     </div>
                     <div class="tab-pane fade" id="files">
                         <br>
-
-                        <h3>Add files</h3>
-
                         <div class="form-group">
                             <table class="table table-hover">
                                 <thead>
