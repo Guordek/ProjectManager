@@ -202,15 +202,14 @@ class ProjectController extends Controller
         $project = Auth::user()->projects->where('id', $id)->first();
         $user = Auth::user();
 
-        foreach ($request->files as $f) {
-            foreach ($f as $file) {
-                // TODO: FAIRE MARCHER CETTE MERDE
-                $filename = Storage::putFile('files', $request->file($f));
-                $file = new ProjectFile;
-                $file->filename = $filename;
-                $file->user()->associate($user);
-                $file->project()->associate($project);
-                $file->save();
+        foreach ($request->files as $file) {
+            foreach ($file as $index => $f) {
+                $filename = $request->file('files')[$index]->store('public/files');
+                $f = new ProjectFile;
+                $f->filename = $filename;
+                $f->user_id = Auth::user()->id;
+                $f->project_id = $project->id;
+                $f->save();
             }
         }
 
