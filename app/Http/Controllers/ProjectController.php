@@ -219,8 +219,10 @@ class ProjectController extends Controller
         return redirect(route('project.show', $project->slug));
     }
 
-    public function dlFile($id, $path) {
-        return response()->download(asset('storage/'. $path));
+    public function dlFile($idProject, $id) {
+        $project = Auth::user()->projects->where('slug', $idProject)->first();
+        $file = $project->files()->where('id', $id)->first();
+        return response()->download('storage/'. $file->path, $file->filename);
     }
 
     public function destroy($id)

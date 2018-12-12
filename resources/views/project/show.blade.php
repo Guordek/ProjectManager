@@ -143,7 +143,7 @@
                             </tbody>
                         </table>
                         {!! Form::open(['method' => 'get', 'url' => route('project.formLinkUserProject', $project->slug)]) !!}
-                        {!! Form::submit('Add a user to the project', ['class' => 'btn btn-primary float-left']) !!}
+                            {!! Form::submit('Add a user to the project', ['class' => 'btn btn-primary float-left']) !!}
                         {!! Form::close() !!}
                     </div>
                     <div class="tab-pane fade" id="files">
@@ -165,7 +165,9 @@
                                         <td>{{ $file->user->name }}</td>
                                         <td>{{ $file->created_at }}</td>
                                         <td>
-                                            <a href="{{ asset('storage/'.$file->path )}}" target="_blank">Download</a>
+                                            {{ Form::open(['method' => 'get', 'url' => route('project.dlFile', [$project->slug, $file])]) }}
+                                                {!! Form::submit('Download', ['class' => 'btn btn-link']) !!}
+                                            {{ Form::close() }}
                                         </td>
                                     </tr>
                                 @empty
