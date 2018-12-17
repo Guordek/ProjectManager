@@ -164,9 +164,13 @@
                                         <th scope="row">{{  $file->filename }}</th>
                                         <td>{{ $file->user->name }}</td>
                                         <td>{{ $file->created_at }}</td>
-                                        <td>
+                                        <td class="column-verticallineMiddle form-inline">
                                             {{ Form::open(['method' => 'get', 'url' => route('project.dlFile', [$project->slug, $file])]) }}
                                                 {!! Form::submit('Download', ['class' => 'btn btn-link']) !!}
+                                            {{ Form::close() }}
+
+                                            {{ Form::open(['method' => 'delete', 'url' => route('project.deleteFile', [$project->slug, $file])]) }}
+                                                {!! Form::submit('Delete', ['class' => 'btn btn-link']) !!}
                                             {{ Form::close() }}
                                         </td>
                                     </tr>

@@ -30,6 +30,7 @@ Route::post('/project/{id}/user/link', 'ProjectController@linkUserProject')->nam
 Route::post('/project/{id}/user/owner', 'ProjectController@changeOwnerProject')->name('project.changeOwnerProject');
 Route::get('/project/{id}/file', 'ProjectController@addFileForm')->name('project.addFileForm');
 Route::get('/project/{id}/download/{path}', 'ProjectController@dlFile')->name('project.dlFile');
+Route::delete('/project/{id}/delete/{path}', 'ProjectController@deleteFile')->name('project.deleteFile');
 Route::post('/project/{id}/file/add', 'ProjectController@addFile')->name('project.addFile');
 Route::delete('/project/{project}/user/{id}/delete', 'ProjectController@removeUserFromProject')->name('project.removeUserFromProject');
 

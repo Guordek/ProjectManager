@@ -222,13 +222,26 @@ class ProjectController extends Controller
     public function dlFile($idProject, $id) {
         $project = Auth::user()->projects->where('slug', $idProject)->first();
         $file = $project->files()->where('id', $id)->first();
+
         return response()->download('storage/'. $file->path, $file->filename);
+    }
+
+    public function deleteFile($idProject, $id) {
+        $project = Auth::user()->projects->where('slug', $idProject)->first();
+        $file = $project->files()->where('id', $id)->first();
+
+        Storage::delete('public/'. $file->path);
+        ProjectFile::destroy($file->id);
+
+        flash('File successfully deleted')->success();
+        return redirect(route('project.show', $project->slug));
     }
 
     public function destroy($id)
     {
         $project = Auth::user()->projects->where('slug', $id)->first();
         $project->delete();
+
         flash('Project successfully deleted')->success();
         return redirect(route('project.index'));
     }
