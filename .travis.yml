@@ -8,6 +8,7 @@ before_script:
   - composer install --no-interaction
   - cp .env.example .env
   - phpenv rehash
+  - php artisan key:generate
   - nvm install 7.7.1
   - npm install npm@latest -g
   - npm install -g jshint
